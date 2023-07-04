@@ -1,0 +1,16 @@
+{% extends 'pillreminder/base.html' %}
+
+{% block title %} Sign In | Pill Reminder {% endblock %}
+
+{% block content %}
+  <h1 class="mt-3">Sign In</h1>
+  <div class="row">
+    <div class="col-5">
+      <form action="#" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
