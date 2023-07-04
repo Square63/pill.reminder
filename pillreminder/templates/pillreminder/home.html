@@ -3,5 +3,9 @@
 {% block title %} Home | Pill Reminder {% endblock %}
 
 {% block content %}
-  <h1 class="mt-3">Welcome to Pill Reminder</h1>
+  {% if user.is_authenticated %}
+    <h1 class="mt-3">Welcome {{ user.username }} to Pill Reminder</h1>
+  {% else %}
+    <h1 class="mt-3">Welcome to Pill Reminder</h1>
+  {% endif %}
 {% endblock %}
