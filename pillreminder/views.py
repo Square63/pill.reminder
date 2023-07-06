@@ -8,7 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def home(request):
-    return render(request, 'pillreminder/home.html')
+    base_template = 'pillreminder/base.html'
+    if request.user.is_authenticated:
+        base_template = 'pillreminder/dashboard.html'
+    return render(request, 'pillreminder/home.html', {'base_template': base_template})
 
 class SignUp(CreateView):
     model = User
@@ -18,7 +21,10 @@ class SignUp(CreateView):
 
 @login_required
 def profile(request):
-    return render(request, 'pillreminder/profile.html')
+    base_template = 'pillreminder/base.html'
+    if request.user.is_authenticated:
+        base_template = 'pillreminder/dashboard.html'
+    return render(request, 'pillreminder/profile.html', {'base_template': base_template})
 
 class ProfileEdit(LoginRequiredMixin, UpdateView):
     model = User
