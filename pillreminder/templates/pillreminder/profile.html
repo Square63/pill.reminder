@@ -1,9 +1,9 @@
-{% extends 'pillreminder/base.html' %}
+{% extends base_template %}
 
 {% block title %} {{ user.username }} | Pill Reminder {% endblock %}
 
 {% block content %}
-  <h1>User Profile</h1>
+  <h1 class="mt-3">User Profile</h1>
   <div class="row">
     <div class="col-5">
       <a href="{% url 'profile-edit' user.id %}">Edit</a>
