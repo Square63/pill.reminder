@@ -1,0 +1,17 @@
+{% extends 'pillreminder/base.html' %}
+
+{% block title %} {{ user.username }} | Pill Reminder {% endblock %}
+
+{% block content %}
+  <h1>User Profile</h1>
+  <div class="row">
+    <div class="col-5">
+      <a href="{% url 'profile-edit' user.id %}">Edit</a>
+      <div class="username"><strong>Username: </strong>{{ user.username }}</div>
+      <div class="fullname"><strong>Full Name: </strong>{{ user.first_name }} {{ user.last_name }}</div>
+      <div class="email"><strong>Email: </strong>{{ user.email }}</div>
+      <div class="joined"><strong>Joined: </strong>{{ user.date_joined }}</div>
+      <div class="lastlogin"><strong>Last Login: </strong>{{ user.last_login }}</div>
+    </div>
+  </div>
+{% endblock %}
