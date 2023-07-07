@@ -1,10 +1,12 @@
+from django import http
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserUpdateForm
+from .forms import SignUpForm, UserUpdateForm, AddReminderForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Reminder, DAYS_CHOICES
 
 # Create your views here.
 def home(request):
@@ -34,3 +36,15 @@ class ProfileEdit(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user
+
+class AddReminder(LoginRequiredMixin, CreateView):
+    model = Reminder
+    template_name = 'pillreminder/add-reminder.html'
+    success_url = reverse_lazy("home")
+    form_class = AddReminderForm
+    def form_valid(self, form: AddReminderForm):
+        reminder = form.save(commit=False)
+        reminder.user = self.request.user
+        reminder.time = form.clean_time()
+        reminder.save()
+        return super(AddReminder, self).form_valid(form)
