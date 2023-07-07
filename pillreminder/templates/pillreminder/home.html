@@ -5,6 +5,14 @@
 {% block content %}
   <h1 class="mt-3">Welcome {{ user.get_full_name }} to Pill Reminder</h1>
   {% if user.is_authenticated %}
-    <!-- Here will be your reminders -->
+    {% for reminder in user.reminder_set.all %}
+      <div class="border rounded-2 p-3 my-3">
+        {{ reminder.days }}
+        {{ reminder.time }}
+        {% if reminder.is_active is False %}
+          <span>Not active</span>
+        {% endif %}
+      </div>
+    {% endfor %}
   {% endif %}
 {% endblock %}
