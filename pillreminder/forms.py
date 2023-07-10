@@ -61,5 +61,5 @@ class MedicineAddForm(forms.ModelForm):
         fields = ("name", "dosage")
 
 MedicineFormSet = formset_factory(
-    MedicineAddForm, extra=2
+    MedicineAddForm, extra=1
 )
