@@ -8,9 +8,16 @@
   <h1 class="mt-3">Add Reminder</h1>
   <div class="row">
     <div class="col-6">
-      <form method="POST">
+      <form method="POST" id="form-container">
         {% csrf_token %}
         {{ form|crispy }}
+        <strong>Medicines</strong>
+        <div id="medicines">
+          <div class="medicines">
+            {{ medicineFormSet }}
+          </div>
+          <button type="button" id="addAnother" class="btn btn-warning my-3">Add another</button>
+        </div>
         <button type="submit" class="btn btn-primary mt-4">Add Reminder</button>
       </form>
     </div>
