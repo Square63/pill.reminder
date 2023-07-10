@@ -19,3 +19,13 @@ class Reminder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def get_days(self):
         return self.days.split(',')
+    def get_hours(self):
+        return self.time.split(':')[0]
+    def get_minutes(self):
+        minutes = self.time.split(':')[1]
+        size = len(minutes)
+        return minutes[:size - 2]
+    def get_ampm(self):
+        minutes = self.time.split(':')[1]
+        size = len(minutes)
+        return minutes[size - 2:]
