@@ -33,7 +33,7 @@ class Reminder(models.Model):
         return self.medicine_set.count() > 0
 
 class Medicine(models.Model):
-    medicine = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     dosage = models.BigIntegerField()
     reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
     def get_dosage(self):
