@@ -17,7 +17,7 @@
           <div class="position-sticky">
             <div class="list-group list-group-flush border mt-4">
               <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %} list-group-item list-group-item-action py-2 ripple">
-                Reminder
+                Reminders
               </a>
               <a href="{% url 'add-reminder' %}" class="{% if request.resolver_match.url_name == 'add-reminder' %}active{% endif %} list-group-item list-group-item-action py-2 ripple">
                 Add Reminder
