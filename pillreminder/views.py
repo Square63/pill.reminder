@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserUpdateForm, AddReminderForm
+from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Reminder, DAYS_CHOICES
@@ -48,3 +48,20 @@ class AddReminder(LoginRequiredMixin, CreateView):
         reminder.time = form.clean_time()
         reminder.save()
         return super(AddReminder, self).form_valid(form)
+
+@login_required
+def reminder_details(request, pk):
+    reminder = Reminder.objects.get(id=pk)
+    return render(request, 'pillreminder/reminder-details.html', {'reminder': reminder})
+
+class EditReminder(LoginRequiredMixin, UpdateView):
+    model = Reminder
+    template_name = 'pillreminder/edit-reminder.html'
+    success_url = reverse_lazy("home")
+    form_class = EditReminderForm
+    def form_valid(self, form: EditReminderForm):
+        reminder = form.save(commit=False)
+        reminder.user = self.request.user
+        reminder.time = form.clean_time()
+        reminder.save()
+        return super(EditReminder, self).form_valid(form)
