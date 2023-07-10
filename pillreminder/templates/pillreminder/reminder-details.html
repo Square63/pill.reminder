@@ -14,7 +14,7 @@
   {% if reminder.has_medicines %}
     <ul>
       {% for medicine in reminder.medicine_set.all %}
-        <li>{{ medicine.medicine }} x {{ medicine.get_dosage }}</li>
+        <li>{{ medicine.name }} x {{ medicine.get_dosage }}</li>
       {% endfor %}
     </ul>
   {% endif %}
