@@ -29,3 +29,10 @@ class Reminder(models.Model):
         minutes = self.time.split(':')[1]
         size = len(minutes)
         return minutes[size - 2:]
+    def has_medicines(self):
+        return self.medicine_set.count() > 0
+
+class Medicine(models.Model):
+    medicine = models.CharField(max_length=255)
+    dosage = models.BigIntegerField()
+    reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
