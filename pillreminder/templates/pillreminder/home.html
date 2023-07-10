@@ -2,18 +2,24 @@
 
 {% block title %} Home | Pill Reminder {% endblock %}
 
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
   <h1 class="mt-3">Welcome {{ user.get_full_name }} to Pill Reminder</h1>
   {% if user.is_authenticated %}
     {% for reminder in user.reminder_set.all %}
-      <a href="{% url 'reminder' reminder.id %}">
-        <div class="border rounded-2 p-3 my-3">
+      <a href="{% url 'reminder' reminder.id %}" class="reminder-anchor hover:bg-gray-50">
+        <div class="border reminder-item rounded-2 p-3 my-3">
           {{ reminder.days }}
+          @
           {{ reminder.time }}
-          {% if reminder.is_active is False %}
-            <span>Not active</span>
-          {% endif %}
-          <a href="{% url 'reminder-edit' reminder.id %}" class="btn btn-success">Edit</a>
+          <div class="actions">
+            <a href="#" class="btn btn-danger float-end">Delete</a>
+            <a href="{% url 'reminder-edit' reminder.id %}" class="btn btn-success float-end me-2">Edit</a>
+          </div>
         </div>
       </a>
     {% endfor %}
