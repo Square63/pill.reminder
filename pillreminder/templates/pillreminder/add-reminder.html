@@ -13,13 +13,44 @@
         {{ form|crispy }}
         <strong>Medicines</strong>
         <div id="medicines">
+          {{ medicineFormSet.management_form }}
+          {% for form in medicineFormSet %}
           <div class="medicines">
-            {{ medicineFormSet }}
+            {{ form|crispy }}
           </div>
-          <button type="button" id="addAnother" class="btn btn-warning my-3">Add another</button>
+          {% endfor %}
+          <button type="button" id="add-form" class="btn btn-warning my-3">Add another</button>
         </div>
         <button type="submit" class="btn btn-primary mt-4">Add Reminder</button>
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  let medicines = document.querySelectorAll(".medicines")
+  let container = document.querySelector("#medicines")
+  let addButton = document.querySelector("#add-form")
+  let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+  let formNum = medicines.length-1
+  addButton.addEventListener('click', addForm)
+
+  function addForm(e) {
+    e.preventDefault()
+
+    let newForm = medicines[0].cloneNode(true)
+    let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+    formNum++
+    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+    container.insertBefore(newForm, addButton)
+
+    totalForms.setAttribute('value', `${formNum+1}`)
+  }
+
+</script>
+
 {% endblock %}
