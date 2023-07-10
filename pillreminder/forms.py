@@ -1,9 +1,8 @@
-from typing import Any
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from django.forms.fields import Field
-from .models import Reminder, DAYS_CHOICES
+from django.forms import formset_factory
+from .models import Reminder, DAYS_CHOICES, Medicine
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -48,3 +47,19 @@ class EditReminderForm(forms.ModelForm):
         return ', '.join(self.cleaned_data['days'])
     def clean_time(self):
         return self.cleaned_data['hours'] + ':' + self.cleaned_data['minutes'] + self.cleaned_data['ampm']
+
+class MedicineAddForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['dosage'].widget.attrs['min'] = 1
+        self.fields['dosage'].widget.attrs['max'] = 1000
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Medicine
+        fields = ("name", "dosage")
+
+MedicineFormSet = formset_factory(
+    MedicineAddForm, extra=2
+)
