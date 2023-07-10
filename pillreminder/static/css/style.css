@@ -1,0 +1,8 @@
+.reminder-anchor {
+  text-decoration: none;
+  line-height: 35px;
+}
+.reminder-item {
+  display: flex;
+  justify-content: space-between;
+}
