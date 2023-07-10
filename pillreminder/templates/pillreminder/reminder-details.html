@@ -10,6 +10,14 @@
   <p><strong>Days: </strong>{{ reminder.days }}</p>
   <p><strong>Time: </strong>{{ reminder.time }} <i>(Asia/Karachi)</i></p>
   <p><strong>Sent Through: </strong>Email</p>
+  <p><strong>Medicines: </strong></p>
+  {% if reminder.has_medicines %}
+    <ul>
+      {% for medicine in reminder.medicine_set.all %}
+        <li>{{ medicine.medicine }} x {{ medicine.get_dosage }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   <p>
     <strong>Active: </strong> {% if reminder.is_active %} Active {% else %} Disabled {% endif %}
   </p>
