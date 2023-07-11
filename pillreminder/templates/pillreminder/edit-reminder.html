@@ -16,7 +16,9 @@
       <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <strong>Medicines</strong>
+        <div class="medicine-title clearfix">
+          <strong>Medicines</strong>
+        </div>
         <div id="medicines">
           {{ form.formset.management_form }}
           {% for form in form.formset %}
