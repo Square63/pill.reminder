@@ -2,6 +2,11 @@
 
 {% block title %} Home | Pill Reminder {% endblock %}
 
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -11,8 +16,22 @@
       <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
+        <strong>Medicines</strong>
+        <div id="medicines">
+          {{ form.formset.management_form }}
+          {% for form in form.formset %}
+          <div class="medicines">
+            {{ form|crispy }}
+          </div>
+          {% endfor %}
+          <button type="button" id="add-form" class="btn btn-warning my-3">Add another</button>
+        </div>
         <button type="submit" class="btn btn-primary mt-4">Save Reminder</button>
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'js/pillreminder.js' %}"></script>
 {% endblock %}
