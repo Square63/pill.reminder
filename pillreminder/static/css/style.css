@@ -16,13 +16,18 @@
 #div_id_hours {
   margin-right: 23px;
 }
-
+#div_id_ampm label {
+  height: 16px;
+}
 .medicines {
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
 }
-
-.medicines .form-group {
+.medicines > div.mb-3 {
   width: 49%;
+}
+.medicine-title.clearfix {
+  display: block;
+  clear: both;
 }
