@@ -13,8 +13,8 @@
         {{ form|crispy }}
         <strong>Medicines</strong>
         <div id="medicines">
-          {{ medicineFormSet.management_form }}
-          {% for form in medicineFormSet %}
+          {{ form.formset.management_form }}
+          {% for form in form.formset %}
           <div class="medicines">
             {{ form|crispy }}
           </div>

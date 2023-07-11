@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, MedicineFormSet
@@ -45,29 +46,29 @@ class AddReminder(LoginRequiredMixin, CreateView):
     def get(self, *args, **kwargs):
         formset = MedicineFormSet()
         form = AddReminderForm()
-        return self.render_to_response({'form': form, 'medicineFormSet': formset})
+        form.formset = formset
+        return self.render_to_response({'form': form})
 
     def post(self, *args, **kwargs):
         form = AddReminderForm(self.request.POST)
-        formset = MedicineFormSet(self.request.POST)
-        new_reminder = 0
-        if form.is_valid():
+        form.formset = MedicineFormSet(self.request.POST)
+        if form.is_valid() and form.formset.is_valid():
             reminder = Reminder()
             reminder.is_active = form.cleaned_data['is_active']
             reminder.days = form.cleaned_data['days']
             reminder.time = form.clean_time()
             reminder.user = self.request.user
             reminder.save()
-            new_reminder = reminder
-
-        if new_reminder and formset.is_valid():
-            for med_sub in formset.cleaned_data:
+            for med_sub in form.formset.cleaned_data:
                 medicine = Medicine()
                 medicine.name = med_sub['name']
                 medicine.dosage = med_sub['dosage']
-                medicine.reminder = new_reminder
+                medicine.reminder = reminder
                 medicine.save()
+            messages.success(self.request, 'The reminder has been created.')
             return redirect(reverse_lazy('home'))
+        else:
+            return self.render_to_response({'form': form})
 
 @login_required
 def reminder_details(request, pk):
