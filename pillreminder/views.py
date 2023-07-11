@@ -14,6 +14,8 @@ def home(request):
     base_template = 'pillreminder/base.html'
     if request.user.is_authenticated:
         base_template = 'pillreminder/dashboard.html'
+    else:
+        return redirect(reverse_lazy('login'))
     return render(request, 'pillreminder/home.html', {'base_template': base_template})
 
 class SignUp(CreateView):
