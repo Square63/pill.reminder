@@ -19,6 +19,11 @@ class Reminder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def get_days(self):
         return self.days.split(',')
+    def get_stripped_days(self):
+        days = []
+        for day in self.get_days():
+            days.append(day.strip())
+        return days
     def get_hours(self):
         return self.time.split(':')[0]
     def get_minutes(self):
