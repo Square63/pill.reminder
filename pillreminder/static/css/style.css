@@ -6,3 +6,23 @@
   display: flex;
   justify-content: space-between;
 }
+#div_id_ampm,
+#div_id_hours,
+#div_id_minutes {
+  width: 30%;
+  float: left;
+}
+#div_id_minutes,
+#div_id_hours {
+  margin-right: 23px;
+}
+
+.medicines {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.medicines .form-group {
+  width: 49%;
+}
