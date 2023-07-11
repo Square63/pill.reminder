@@ -1,11 +1,11 @@
 {% extends 'pillreminder/dashboard.html' %}
 
 {% block title %} Reminder | Pill Reminder {% endblock %}
+{% block pagetitle %} Reminder {{ reminder.id }} {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <h1 class="mt-3">Reminder {{ reminder.id }}</h1>
   <p>This reminder is sent through Email <strong>{{ reminder.days }}</strong> at <strong>{{ reminder.time }}</strong> <i>(local time)</i></p>
   <p><strong>Days: </strong>{{ reminder.days }}</p>
   <p><strong>Time: </strong>{{ reminder.time }} <i>(Asia/Karachi)</i></p>
