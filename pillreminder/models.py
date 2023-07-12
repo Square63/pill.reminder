@@ -17,6 +17,8 @@ class Reminder(models.Model):
     days = models.CharField(max_length=255, default="Monday")
     time = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    class Meta:
+        ordering = ('-id',)
     def get_days(self):
         return self.days.split(',')
     def get_stripped_days(self):
