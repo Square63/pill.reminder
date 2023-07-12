@@ -15,6 +15,7 @@ function addForm(e) {
   let formRegex = RegExp(`form-(\\d){1}-`,'g')
 
   formNum++
+  removeButton.removeAttribute('disabled')
   newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
   container.insertBefore(newForm, addButton)
 
@@ -25,6 +26,12 @@ function removeForm(e) {
   e.preventDefault()
   let allMedicines = document.querySelectorAll(".medicines")
   let indexToRemove = allMedicines.length - 1
+  if (indexToRemove === 1) {
+    removeButton.setAttribute('disabled', true)
+  }
+  if (indexToRemove === 0) {
+    return;
+  }
   allMedicines[0].parentElement.removeChild(allMedicines[indexToRemove])
   formNum++
   totalForms.setAttribute('value', `${formNum-1}`)
