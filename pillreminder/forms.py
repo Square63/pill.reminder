@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.forms import formset_factory
 from .models import Reminder, DAYS_CHOICES, Medicine
+from .validators import validate_dosage
 
 class SignUpForm(UserCreationForm):
     class Meta:
@@ -56,10 +57,10 @@ class EditReminderForm(forms.ModelForm):
 class MedicineAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['dosage'].widget.attrs['min'] = 1
-        self.fields['dosage'].widget.attrs['max'] = 1000
+        self.fields['name'].widget.attrs['required'] = True
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+    dosage = forms.IntegerField(label='Dosage (in mg)', widget=forms.NumberInput(), validators=[validate_dosage])
     class Meta:
         model = Medicine
         fields = ("name", "dosage")
