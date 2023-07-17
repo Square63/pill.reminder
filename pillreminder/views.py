@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, MedicineFormSet, EditMedicineFormSet
+from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, MedicineFormSet, EditMedicineFormSet, ProfilePictureForm
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Reminder, DAYS_CHOICES, Medicine, UserMethods as User
+from .models import Reminder, DAYS_CHOICES, Medicine, UserMethods as User, ProfilePicture
 
 # Create your views here.
 def home(request):
@@ -39,6 +39,35 @@ class ProfileEdit(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user
+    def get(self, *args, **kwargs):
+        form = UserUpdateForm(instance=self.request.user)
+        try:
+            picture = ProfilePicture.objects.get(user_id=1)
+        except ProfilePicture.DoesNotExist:
+            picture = None
+        picform = ProfilePictureForm(instance=picture)
+        return self.render_to_response({'form': form, 'picform': picform})
+    def post(self, *args, **kwargs):
+        form = UserUpdateForm(self.request.POST, self.request.FILES, instance=self.request.user)
+        try:
+            picture = ProfilePicture.objects.get(user_id=1)
+        except ProfilePicture.DoesNotExist:
+            picture = None
+        picform = ProfilePictureForm(self.request.POST, self.request.FILES, instance=picture)
+        print(picform.is_valid())
+        if form.is_valid() and picform.is_valid():
+            form.save()
+            if picture:
+                picture.image = picform.cleaned_data['image']
+                picture.user = self.request.user
+                picture.save()
+            else:
+                picture = ProfilePicture()
+                picture.image = picform.cleaned_data['image']
+                picture.user = self.request.user
+                picture.save()
+        messages.success(self.request, 'Profile has been updated.')
+        return redirect(reverse_lazy('profile'))
 
 class AddReminder(LoginRequiredMixin, CreateView):
     model = Reminder
