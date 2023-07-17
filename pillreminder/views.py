@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
@@ -7,7 +6,7 @@ from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Reminder, DAYS_CHOICES, Medicine
+from .models import Reminder, DAYS_CHOICES, Medicine, UserMethods as User
 
 # Create your views here.
 def home(request):
@@ -26,10 +25,11 @@ class SignUp(CreateView):
 
 @login_required
 def profile(request):
+    user = User.objects.get(id=request.user.id)
     base_template = 'pillreminder/base.html'
     if request.user.is_authenticated:
         base_template = 'pillreminder/dashboard.html'
-    return render(request, 'pillreminder/profile.html', {'base_template': base_template})
+    return render(request, 'pillreminder/profile.html', {'base_template': base_template, 'user': user})
 
 class ProfileEdit(LoginRequiredMixin, UpdateView):
     model = User
@@ -105,11 +105,17 @@ class EditReminder(LoginRequiredMixin, UpdateView):
             reminder.user = self.request.user
             reminder.save()
             for med_sub in form.formset.cleaned_data:
-                medicine = Medicine.objects.get(id=med_sub['id'])
+                try:
+                    medicine = Medicine.objects.get(id=med_sub['id'])
+                except Medicine.DoesNotExist:
+                    medicine = Medicine()
                 medicine.name = med_sub['name']
                 medicine.dosage = med_sub['dosage']
                 medicine.reminder = reminder
-                medicine.save()
+                if med_sub.get('delete'):
+                    medicine.delete()
+                else:
+                    medicine.save()
             messages.success(self.request, 'The reminder has been updated.')
             return redirect(reverse_lazy('home'))
         else:
