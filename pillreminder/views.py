@@ -60,7 +60,10 @@ class ProfileEdit(LoginRequiredMixin, UpdateView):
             if picture:
                 picture.image = picform.cleaned_data['image']
                 picture.user = self.request.user
-                picture.save()
+                if picture.image:
+                    picture.save()
+                else:
+                    picture.delete()
             else:
                 picture = ProfilePicture()
                 picture.image = picform.cleaned_data['image']
