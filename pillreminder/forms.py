@@ -26,7 +26,14 @@ class AddReminderForm(forms.ModelForm):
     def clean_days(self):
         return ', '.join(self.cleaned_data['days'])
     def clean_time(self):
-        return self.cleaned_data['hours'] + ':' + self.cleaned_data['minutes'] + self.cleaned_data['ampm']
+        hours = self.cleaned_data['hours']
+        minutes = self.cleaned_data['minutes']
+        if int(hours) < 10 and len(hours) == 1:
+            hours = '0'+str(hours)
+
+        if int(minutes) < 10 and len(minutes) == 1:
+            minutes = '0'+str(minutes)
+        return hours + ':' + minutes + self.cleaned_data['ampm']
 
 class EditReminderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -52,7 +59,14 @@ class EditReminderForm(forms.ModelForm):
     def clean_days(self):
         return ', '.join(self.cleaned_data['days'])
     def clean_time(self):
-        return self.cleaned_data['hours'] + ':' + self.cleaned_data['minutes'] + self.cleaned_data['ampm']
+        hours = self.cleaned_data['hours']
+        minutes = self.cleaned_data['minutes']
+        if int(hours) < 10 and len(hours) == 1:
+            hours = '0'+str(hours)
+
+        if int(minutes) < 10 and len(minutes) == 1:
+            minutes = '0'+str(minutes)
+        return hours + ':' + minutes + self.cleaned_data['ampm']
 
 class MedicineAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -70,9 +84,11 @@ class EditMedicineForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['dosage'].widget.attrs['min'] = 1
         self.fields['dosage'].widget.attrs['max'] = 1000
+        self.fields['dosage'].label = 'Dosage (in mg)'
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
     id = forms.IntegerField(widget=forms.HiddenInput())
+    delete = forms.IntegerField(widget=forms.HiddenInput(attrs={'value':0}))
     class Meta:
         model = Medicine
         fields = ("name", "dosage")
