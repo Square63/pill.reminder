@@ -16,7 +16,7 @@ DAYS_CHOICES = [
 class UserMethods(User):
     def upcoming_reminders(self):
         day = datetime.now().strftime('%A')
-        hours = datetime.now().strftime('%I:%M:%p')
+        hours = datetime.now().strftime('%I:%M%p')
         reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__gte=hours)
         return reminders
     class Meta:
