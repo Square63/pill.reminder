@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.forms import formset_factory
-from .models import Reminder, DAYS_CHOICES, Medicine
+from .models import Reminder, DAYS_CHOICES, Medicine, ProfilePicture
 from .validators import validate_dosage
 
 class SignUpForm(UserCreationForm):
@@ -100,3 +100,9 @@ MedicineFormSet = formset_factory(
 EditMedicineFormSet = formset_factory(
     EditMedicineForm, extra=1
 )
+
+class ProfilePictureForm(forms.ModelForm):
+    image = forms.ImageField(label='Profile Picture', required=False)
+    class Meta:
+        model = ProfilePicture
+        fields = ('image', )
