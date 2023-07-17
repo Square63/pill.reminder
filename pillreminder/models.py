@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 DAYS_CHOICES = [
@@ -11,6 +12,15 @@ DAYS_CHOICES = [
     ("Friday", "Friday"),
     ("Saturday", "Saturday"),
 ]
+
+class UserMethods(User):
+    def upcoming_reminders(self):
+        day = datetime.now().strftime('%A')
+        hours = datetime.now().strftime('%I:%M:%p')
+        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__gte=hours)
+        return reminders
+    class Meta:
+        proxy=True
 
 class Reminder(models.Model):
     is_active = models.BooleanField(default=True)
