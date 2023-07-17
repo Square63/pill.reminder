@@ -10,7 +10,7 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-5">
+    <div class="col-6">
       <a href="{% url 'profile-edit' user.id %}">Edit</a>
       <div class="username"><strong>Username: </strong>{{ user.username }}</div>
       <div class="fullname"><strong>Full Name: </strong>{{ user.first_name }} {{ user.last_name }}</div>
@@ -19,6 +19,11 @@
       <div class="lastlogin"><strong>Last Login: </strong>{{ user.last_login }}</div>
       <div class="upcoming"><strong>Future Reminder(s): </strong></div>
     </div>
+    {% if user.profilepicture %}
+      <div class="col-6">
+        <img src="{{ user.profilepicture.image.url }}" alt="Profile Picture" class="float-end" width="200" height="200">
+      </div>
+    {% endif %}
   </div>
   {% for reminder in user.upcoming_reminders %}
     <a href="{% url 'reminder' reminder.id %}" class="reminder-anchor hover:bg-gray-50">
