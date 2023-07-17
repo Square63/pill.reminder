@@ -19,15 +19,19 @@
 #div_id_ampm label {
   height: 16px;
 }
-.medicines {
+.medicines .item {
   display: flex;
   justify-content: space-between;
   margin-top: 5px;
 }
-.medicines > div.mb-3 {
-  width: 49%;
+.medicines .item > div.mb-3 {
+  width: 38%;
 }
 .medicine-title.clearfix {
   display: block;
   clear: both;
+}
+button.remove-form {
+  height: 37px;
+  margin-top: 32px;
 }
