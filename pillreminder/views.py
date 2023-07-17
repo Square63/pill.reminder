@@ -54,7 +54,6 @@ class ProfileEdit(LoginRequiredMixin, UpdateView):
         except ProfilePicture.DoesNotExist:
             picture = None
         picform = ProfilePictureForm(self.request.POST, self.request.FILES, instance=picture)
-        print(picform.is_valid())
         if form.is_valid() and picform.is_valid():
             form.save()
             if picture:
