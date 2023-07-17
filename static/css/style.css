@@ -1,0 +1,37 @@
+.reminder-anchor {
+  text-decoration: none;
+  line-height: 35px;
+}
+.reminder-item {
+  display: flex;
+  justify-content: space-between;
+}
+#div_id_ampm,
+#div_id_hours,
+#div_id_minutes {
+  width: 30%;
+  float: left;
+}
+#div_id_minutes,
+#div_id_hours {
+  margin-right: 23px;
+}
+#div_id_ampm label {
+  height: 16px;
+}
+.medicines .item {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.medicines .item > div.mb-3 {
+  width: 38%;
+}
+.medicine-title.clearfix {
+  display: block;
+  clear: both;
+}
+button.remove-form {
+  height: 37px;
+  margin-top: 32px;
+}
