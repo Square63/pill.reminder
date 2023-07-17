@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pillreminder.apps.PillreminderConfig',
     'django_extensions',
+    'django_crontab',
     'crispy_forms',
     'crispy_bootstrap5'
 ]
@@ -133,9 +134,13 @@ LOGOUT_REDIRECT_URL = "/"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#EMAIL_HOST='localhost'
-#EMAIL_PORT=1025
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST='localhost'
+# EMAIL_PORT=1025
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CRONJOBS = [
+    ('*/1 * * * *', 'pillreminder.cron.send_reminder')
+]
