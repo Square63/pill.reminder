@@ -19,7 +19,7 @@
       <div class="lastlogin"><strong>Last Login: </strong>{{ user.last_login }}</div>
       <div class="upcoming"><strong>Future Reminder(s): </strong></div>
     </div>
-    {% if user.profilepicture %}
+    {% if user.profilepicture.image %}
       <div class="col-6">
         <img src="{{ user.profilepicture.image.url }}" alt="Profile Picture" class="float-end" width="200" height="200">
       </div>
