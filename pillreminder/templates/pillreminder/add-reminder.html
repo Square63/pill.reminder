@@ -23,11 +23,13 @@
           {{ form.formset.management_form }}
           {% for form in form.formset %}
           <div class="medicines">
-            {{ form|crispy }}
+            <div class="item {{ form.name.auto_id }}">
+              {{ form|crispy }}
+              <button type="button" data-id="{{ form.name.auto_id }}" class="btn btn-danger btn-sm remove-form" disabled>Remove</button>
+            </div>
           </div>
           {% endfor %}
           <button type="button" id="add-form" class="btn btn-warning my-3">Add another</button>
-          <button type="button" id="remove-form" class="btn btn-danger my-3" disabled>Remove</button>
         </div>
         <button type="submit" class="btn btn-primary mt-4">Add Reminder</button>
       </form>
