@@ -23,7 +23,7 @@ class UserMethods(User):
         proxy=True
 
 class ProfilePicture(models.Model):
-    image = models.ImageField(max_length=255)
+    image = models.ImageField(null=True, blank=True, upload_to='images/')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Reminder(models.Model):
