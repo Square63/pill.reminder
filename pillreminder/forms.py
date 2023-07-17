@@ -106,3 +106,7 @@ class ProfilePictureForm(forms.ModelForm):
     class Meta:
         model = ProfilePicture
         fields = ('image', )
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=255, required=True)
+    message = forms.CharField(widget=forms.Textarea())

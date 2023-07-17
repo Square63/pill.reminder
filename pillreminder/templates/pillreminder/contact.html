@@ -1,0 +1,18 @@
+{% extends base_template|default:'pillreminder/extender.html' %}
+
+{% block title %} Contact | Pill Reminder {% endblock %}
+{% block pagetitle %} Contact {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-6">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary mt-4">Send</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, MedicineFormSet, EditMedicineFormSet, ProfilePictureForm
+from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, MedicineFormSet, EditMedicineFormSet, ProfilePictureForm, ContactForm
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Reminder, DAYS_CHOICES, Medicine, UserMethods as User, ProfilePicture
+from django.core.mail import send_mail
 
 # Create your views here.
 def home(request):
@@ -148,3 +149,25 @@ class EditReminder(LoginRequiredMixin, UpdateView):
             return redirect(reverse_lazy('home'))
         else:
             return self.render_to_response({'form': form})
+
+def contact(request):
+    base_template = 'pillreminder/base.html'
+    form = ContactForm()
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['name']
+            message = form.cleaned_data['message']
+            print(form.cleaned_data)
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email='pillreminder@square63.com',
+                recipient_list=["raza1778@gmail.com"],
+                fail_silently=False
+            )
+            messages.success(request, 'Thank you contacting us.')
+            return redirect(reverse_lazy('contact'))
+
+    return render(request, 'pillreminder/contact.html', {'base_template': base_template, 'form': form})
