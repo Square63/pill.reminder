@@ -22,6 +22,10 @@ class UserMethods(User):
     class Meta:
         proxy=True
 
+class ProfilePicture(models.Model):
+    image = models.ImageField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
 class Reminder(models.Model):
     is_active = models.BooleanField(default=True)
     days = models.CharField(max_length=255, default="Monday")
