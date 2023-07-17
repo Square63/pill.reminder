@@ -3,6 +3,11 @@
 {% block title %} {{ user.username }} | Pill Reminder {% endblock %}
 {% block pagetitle %} User Profile {% endblock %}
 
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block content %}
   <div class="row">
     <div class="col-5">
@@ -12,6 +17,20 @@
       <div class="email"><strong>Email: </strong>{{ user.email }}</div>
       <div class="joined"><strong>Joined: </strong>{{ user.date_joined }}</div>
       <div class="lastlogin"><strong>Last Login: </strong>{{ user.last_login }}</div>
+      <div class="upcoming"><strong>Future Reminder(s): </strong></div>
     </div>
   </div>
+  {% for reminder in user.upcoming_reminders %}
+    <a href="{% url 'reminder' reminder.id %}" class="reminder-anchor hover:bg-gray-50">
+      <div class="border reminder-item rounded-2 p-3 my-3">
+        {{ reminder.days }}
+        @
+        {{ reminder.time }}
+        <div class="actions">
+          <a href="#" class="btn btn-danger float-end">Delete</a>
+          <a href="{% url 'reminder-edit' reminder.id %}" class="btn btn-success float-end me-2">Edit</a>
+        </div>
+      </div>
+    </a>
+  {% endfor %}
 {% endblock %}
