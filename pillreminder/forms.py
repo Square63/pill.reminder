@@ -19,7 +19,7 @@ class AddReminderForm(forms.ModelForm):
     days = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DAYS_CHOICES)
     hours = forms.CharField(label='Hour', widget=forms.NumberInput(attrs={'min':1, 'max':12}))
     minutes = forms.CharField(label='Minutes', widget=forms.NumberInput(attrs={'min':1, 'max':59}))
-    ampm = forms.ChoiceField(label=' ', choices=(('am', 'AM'), ('pm', 'PM')), required=False)
+    ampm = forms.ChoiceField(label=' ', choices=(('AM', 'AM'), ('PM', 'PM')), required=False)
     class Meta:
         model = Reminder
         exclude = ("user", "time")
@@ -52,7 +52,7 @@ class EditReminderForm(forms.ModelForm):
     days = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DAYS_CHOICES)
     hours = forms.CharField(label='Hour', widget=forms.NumberInput(attrs={'min':1, 'max':12}))
     minutes = forms.CharField(label='Minutes', widget=forms.NumberInput(attrs={'min':1, 'max':59}))
-    ampm = forms.ChoiceField(label=' ', choices=(('am', 'AM'), ('pm', 'PM')), required=False)
+    ampm = forms.ChoiceField(label=' ', choices=(('AM', 'AM'), ('PM', 'PM')), required=False)
     class Meta:
         model = Reminder
         exclude = ("user", "time")
