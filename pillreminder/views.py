@@ -7,7 +7,8 @@ from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Reminder, DAYS_CHOICES, Medicine, UserMethods as User, ProfilePicture
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 
 # Create your views here.
 def home(request):
@@ -162,14 +163,12 @@ def contact(request):
         if form.is_valid():
             subject = form.cleaned_data['name']
             message = form.cleaned_data['message']
-            print(form.cleaned_data)
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email='pillreminder@square63.com',
-                recipient_list=["raza1778@gmail.com"],
-                fail_silently=False
-            )
+            htmly = get_template('pillreminder/emails/reminder.html')
+            d = {'user': request.user, 'message': message}
+            html_content = htmly.render(d)
+            msg = EmailMultiAlternatives(subject, message, "pillreminder@square63.com", ["raza1778@gmail.com"])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
             messages.success(request, 'Thank you contacting us.')
             return redirect(reverse_lazy('contact'))
 
