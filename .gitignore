@@ -1,3 +1,4 @@
 .history
 db.sqlite3
 media
+pill_reminder/email_settings.py
