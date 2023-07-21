@@ -17,7 +17,7 @@ class UserMethods(User):
     def upcoming_reminders(self):
         day = datetime.now().strftime('%A')
         hours = datetime.now().strftime('%I:%M%p')
-        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__gte=hours)
+        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__gte=hours, reminded=False)
         return reminders
     class Meta:
         proxy=True
@@ -30,6 +30,7 @@ class Reminder(models.Model):
     is_active = models.BooleanField(default=True)
     days = models.CharField(max_length=255, default="Monday")
     time = models.CharField(max_length=20)
+    reminded = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     class Meta:
         ordering = ('-id',)
