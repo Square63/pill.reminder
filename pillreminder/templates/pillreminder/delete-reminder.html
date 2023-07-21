@@ -1,0 +1,17 @@
+{% extends 'pillreminder/dashboard.html' %}
+
+{% block title %} Home | Pill Reminder {% endblock %}
+{% block pagetitle %} Delete Reminder {% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-6">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary mt-4">Delete Reminder</button>
+        <a href="{% url 'home' %}" class="btn btn-warning mt-4">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

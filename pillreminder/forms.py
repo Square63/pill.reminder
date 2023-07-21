@@ -68,6 +68,11 @@ class EditReminderForm(forms.ModelForm):
             minutes = '0'+str(minutes)
         return hours + ':' + minutes + self.cleaned_data['ampm']
 
+class DeleteReminderForm(forms.ModelForm):
+    class Meta:
+        model = Reminder
+        fields = ('id',)
+
 class MedicineAddForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

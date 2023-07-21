@@ -9,5 +9,6 @@ urlpatterns = [
     path('add-reminder', views.AddReminder.as_view(), name='add-reminder'),
     path('reminder/<pk>', views.reminder_details, name='reminder'),
     path('reminder/<pk>/edit', views.EditReminder.as_view(), name='reminder-edit'),
+    path('reminder/<pk>/delete', views.DeleteReminder.as_view(), name='reminder-delete'),
     path('contact', views.contact, name='contact'),
 ]

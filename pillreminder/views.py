@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, MedicineFormSet, EditMedicineFormSet, ProfilePictureForm, ContactForm
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import SignUpForm, UserUpdateForm, AddReminderForm, EditReminderForm, EditMedicineForm, DeleteReminderForm, MedicineFormSet, EditMedicineFormSet, ProfilePictureForm, ContactForm
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -153,6 +153,28 @@ class EditReminder(LoginRequiredMixin, UpdateView):
             return redirect(reverse_lazy('home'))
         else:
             return self.render_to_response({'form': form})
+
+class DeleteReminder(LoginRequiredMixin, DeleteView):
+    model = Reminder
+    template_name = 'pillreminder/delete-reminder.html'
+    success_url = reverse_lazy('home')
+    form_class = DeleteReminderForm
+
+    def get(self, *args, **kwargs):
+        reminder = Reminder.objects.get(id=kwargs.pop('pk'))
+        if self.request.user != reminder.user:
+            return redirect(reverse_lazy('home'))
+        form = DeleteReminderForm(instance=reminder)
+        return self.render_to_response({'form': form})
+
+    def post(self, *args, **kwargs):
+        reminder = Reminder.objects.get(id=kwargs.pop('pk'))
+        form = DeleteReminderForm(self.request.POST)
+        if form.is_valid():
+            reminder.delete()
+            messages.warning(self.request, 'Reminder has been deleted.')
+            return redirect(reverse_lazy('home'))
+        return self.render_to_response({'form': form})
 
 def contact(request):
     base_template = 'pillreminder/base.html'

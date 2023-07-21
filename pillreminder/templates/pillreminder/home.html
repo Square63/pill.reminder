@@ -17,7 +17,7 @@
           @
           {{ reminder.time }}
           <div class="actions">
-            <a href="#" class="btn btn-danger float-end">Delete</a>
+            <a href="{% url 'reminder-delete' reminder.id %}" class="btn btn-danger float-end">Delete</a>
             <a href="{% url 'reminder-edit' reminder.id %}" class="btn btn-success float-end me-2">Edit</a>
           </div>
         </div>
