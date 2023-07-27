@@ -13,7 +13,7 @@
     {% for reminder in user.reminder_set.all %}
       <a href="{% url 'reminder' reminder.id %}" class="reminder-anchor hover:bg-gray-50">
         <div class="border reminder-item rounded-2 p-3 my-3">
-          {{ reminder.days }}
+          {{ reminder.get_selected_days }}
           @
           {{ reminder.time }}
           <div class="actions">

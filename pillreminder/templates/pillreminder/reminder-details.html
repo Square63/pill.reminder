@@ -7,7 +7,7 @@
 
 {% block content %}
   <a href="{% url 'reminder-edit' reminder.id %}" class="btn btn-sm btn-warning">Edit</a>
-  <p>This reminder is sent through Email <strong>{{ reminder.days }}</strong> at <strong>{{ reminder.time }}</strong> <i>(local time)</i></p>
+  <p>This reminder is sent through Email <strong>{{ reminder.get_selected_days }}</strong> at <strong>{{ reminder.time }}</strong> <i>(local time)</i></p>
   <p><strong>Days: </strong>{{ reminder.days }}</p>
   <p><strong>Time: </strong>{{ reminder.time }} <i>(Asia/Karachi)</i></p>
   <p><strong>Sent Through: </strong>Email</p>
