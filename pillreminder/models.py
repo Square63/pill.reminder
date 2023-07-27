@@ -51,6 +51,14 @@ class Reminder(models.Model):
         minutes = self.time.split(':')[1]
         size = len(minutes)
         return minutes[size - 2:]
+    def get_selected_days(self):
+        days = []
+        for day, i in DAYS_CHOICES:
+            days.append(i)
+        string = self.days
+        if days == self.get_stripped_days():
+            string = 'Every Day'
+        return string
     def has_medicines(self):
         return self.medicine_set.count() > 0
 
