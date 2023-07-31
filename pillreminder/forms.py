@@ -22,7 +22,7 @@ class AddReminderForm(forms.ModelForm):
     ampm = forms.ChoiceField(label=' ', choices=(('AM', 'AM'), ('PM', 'PM')), required=False)
     class Meta:
         model = Reminder
-        exclude = ("user", "time")
+        exclude = ("user", "time", "reminded")
     def clean_days(self):
         return ', '.join(self.cleaned_data['days'])
     def clean_time(self):
@@ -55,7 +55,7 @@ class EditReminderForm(forms.ModelForm):
     ampm = forms.ChoiceField(label=' ', choices=(('AM', 'AM'), ('PM', 'PM')), required=False)
     class Meta:
         model = Reminder
-        exclude = ("user", "time")
+        exclude = ("user", "time", "reminded")
     def clean_days(self):
         return ', '.join(self.cleaned_data['days'])
     def clean_time(self):
