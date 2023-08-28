@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pillreminder.apps.PillreminderConfig',
+    'main.apps.MainConfig',
     'django_extensions',
     'django_crontab',
     'crispy_forms',
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'pill_reminder.urls'
+ROOT_URLCONF = 'pillreminder.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pill_reminder.wsgi.application'
+WSGI_APPLICATION = 'pillreminder.wsgi.application'
 
 
 # Database
@@ -138,17 +138,17 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # EMAIL_HOST='localhost'
 # EMAIL_PORT=1025
 
-from .email_settings import *
-EMAIL_BACKEND = EMAIL_BACKEND
-EMAIL_HOST = EMAIL_HOST
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-EMAIL_PORT = EMAIL_PORT
-EMAIL_USE_SSL = EMAIL_USE_SSL
+# from .email_settings import *
+# EMAIL_BACKEND = EMAIL_BACKEND
+# EMAIL_HOST = EMAIL_HOST
+# EMAIL_HOST_USER = EMAIL_HOST_USER
+# EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+# EMAIL_PORT = EMAIL_PORT
+# EMAIL_USE_SSL = EMAIL_USE_SSL
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRONJOBS = [
-    ('*/1 * * * *', 'pillreminder.cron.send_reminder')
+    ('*/1 * * * *', 'main.cron.send_reminder')
 ]

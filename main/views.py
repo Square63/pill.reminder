@@ -12,30 +12,30 @@ from django.template.loader import get_template
 
 # Create your views here.
 def home(request):
-    base_template = 'pillreminder/base.html'
+    base_template = 'main/base.html'
     if request.user.is_authenticated:
-        base_template = 'pillreminder/dashboard.html'
+        base_template = 'main/dashboard.html'
     else:
         return redirect(reverse_lazy('login'))
-    return render(request, 'pillreminder/home.html', {'base_template': base_template})
+    return render(request, 'main/home.html', {'base_template': base_template})
 
 class SignUp(CreateView):
     model = User
-    template_name = 'pillreminder/signup.html'
+    template_name = 'main/signup.html'
     success_url = reverse_lazy("login")
     form_class = SignUpForm
 
 @login_required
 def profile(request):
     user = User.objects.get(id=request.user.id)
-    base_template = 'pillreminder/base.html'
+    base_template = 'main/base.html'
     if request.user.is_authenticated:
-        base_template = 'pillreminder/dashboard.html'
-    return render(request, 'pillreminder/profile.html', {'base_template': base_template, 'user': user})
+        base_template = 'main/dashboard.html'
+    return render(request, 'main/profile.html', {'base_template': base_template, 'user': user})
 
 class ProfileEdit(LoginRequiredMixin, UpdateView):
     model = User
-    template_name = 'pillreminder/profile-edit.html'
+    template_name = 'main/profile-edit.html'
     success_url = reverse_lazy("profile")
     form_class = UserUpdateForm
 
@@ -75,7 +75,7 @@ class ProfileEdit(LoginRequiredMixin, UpdateView):
 
 class AddReminder(LoginRequiredMixin, CreateView):
     model = Reminder
-    template_name = 'pillreminder/add-reminder.html'
+    template_name = 'main/add-reminder.html'
     success_url = reverse_lazy("home")
     form_class = AddReminderForm
 
@@ -109,11 +109,11 @@ class AddReminder(LoginRequiredMixin, CreateView):
 @login_required
 def reminder_details(request, pk):
     reminder = Reminder.objects.get(id=pk)
-    return render(request, 'pillreminder/reminder-details.html', {'reminder': reminder})
+    return render(request, 'main/reminder-details.html', {'reminder': reminder})
 
 class EditReminder(LoginRequiredMixin, UpdateView):
     model = Reminder
-    template_name = 'pillreminder/edit-reminder.html'
+    template_name = 'main/edit-reminder.html'
     success_url = reverse_lazy("home")
     form_class = EditReminderForm
     def get(self, *args, **kwargs):
@@ -156,7 +156,7 @@ class EditReminder(LoginRequiredMixin, UpdateView):
 
 class DeleteReminder(LoginRequiredMixin, DeleteView):
     model = Reminder
-    template_name = 'pillreminder/delete-reminder.html'
+    template_name = 'main/delete-reminder.html'
     success_url = reverse_lazy('home')
     form_class = DeleteReminderForm
 
@@ -177,7 +177,7 @@ class DeleteReminder(LoginRequiredMixin, DeleteView):
         return self.render_to_response({'form': form})
 
 def contact(request):
-    base_template = 'pillreminder/base.html'
+    base_template = 'main/base.html'
     form = ContactForm()
 
     if request.method == 'POST':
@@ -185,13 +185,13 @@ def contact(request):
         if form.is_valid():
             subject = form.cleaned_data['name']
             message = form.cleaned_data['message']
-            htmly = get_template('pillreminder/emails/reminder.html')
+            htmly = get_template('main/emails/reminder.html')
             d = {'user': request.user, 'message': message}
             html_content = htmly.render(d)
-            msg = EmailMultiAlternatives(subject, message, "pillreminder@square63.com", ["raza1778@gmail.com"])
+            msg = EmailMultiAlternatives(subject, message, "main@square63.com", ["raza1778@gmail.com"])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             messages.success(request, 'Thank you contacting us.')
             return redirect(reverse_lazy('contact'))
 
-    return render(request, 'pillreminder/contact.html', {'base_template': base_template, 'form': form})
+    return render(request, 'main/contact.html', {'base_template': base_template, 'form': form})

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pillreminder', '0003_usermethods_alter_reminder_options_profilepicture'),
+        ('main', '0003_usermethods_alter_reminder_options_profilepicture'),
     ]
 
     operations = [
