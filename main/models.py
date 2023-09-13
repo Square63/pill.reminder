@@ -61,6 +61,11 @@ class Reminder(models.Model):
         return string
     def has_medicines(self):
         return self.medicine_set.count() > 0
+    def get_user_email(self):
+        return self.user.email
+    get_user_email.short_description = 'Email'
+    def __str__(self):
+        return self.get_selected_days() + ' @ ' + self.time
 
 class Medicine(models.Model):
     name = models.CharField(max_length=255)
@@ -68,3 +73,8 @@ class Medicine(models.Model):
     reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
     def get_dosage(self):
         return str(self.dosage) + 'mg'
+    def get_user(self):
+        return self.reminder.user.username
+    get_user.short_description = 'User'
+    def __str__(self):
+        return self.name + " " + self.get_dosage()
