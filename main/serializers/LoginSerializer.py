@@ -16,8 +16,8 @@ class LoginSerializer(serializers.ModelSerializer):
         email=attrs.get('email')
         password=attrs.pop('password')
         try:
-            user = User.objects.get(email=email)
-            print(user)
+            name = email.split('@')[0]
+            user = User.objects.get(username=name)
         except User.DoesNotExist:
             user = None
         if user is None:
