@@ -5,13 +5,13 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginSerializer(serializers.ModelSerializer):
-    access = serializers.SerializerMethodField('_get_access_token')
+    tokens = serializers.SerializerMethodField('_get_access_token')
     email = serializers.EmailField(required=True, validators=[EmailValidator])
     password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'access')
+        fields = ('email', 'password', 'tokens')
     def validate(self, attrs):
         email=attrs.get('email')
         password=attrs.pop('password')
@@ -33,4 +33,7 @@ class LoginSerializer(serializers.ModelSerializer):
         return user
     def _get_access_token(self, user_object):
         refresh = RefreshToken.for_user(user_object)
-        return str(refresh.access_token)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
