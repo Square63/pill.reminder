@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.core.validators import EmailValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
 
 class LoginSerializer(serializers.ModelSerializer):
     tokens = serializers.SerializerMethodField('_get_access_token')
@@ -30,6 +31,8 @@ class LoginSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         name = validated_data['email'].split('@')[0]
         user = User.objects.get(username=name)
+        user.last_login = timezone.now()
+        user.save()
         return user
     def _get_access_token(self, user_object):
         refresh = RefreshToken.for_user(user_object)
