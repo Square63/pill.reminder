@@ -9,7 +9,9 @@ from rest_framework_simplejwt.views import (
 from main.views import (
     register_view,
     login_view,
-    reminders_view
+    reminders_view,
+    reminder_view,
+    user_view
 )
 
 urlpatterns = [
@@ -18,5 +20,7 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('reminders', reminders_view, name='user_reminders')
+    path('user', user_view, name='user'),
+    path('reminders', reminders_view, name='user_reminders'),
+    path('reminder/<int:pk>', reminder_view, name='user_reminder'),
 ]
