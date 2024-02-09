@@ -32,3 +32,12 @@ class UserSerializer(serializers.ModelSerializer):
         return data
     def _get_full_name(self, user_object):
         return user_object.get_full_name()
+    def update(self, instance, validated_data):
+        for name, value in validated_data.items():
+            print(name)
+            if name == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, name, value)
+        instance.save()
+        return instance

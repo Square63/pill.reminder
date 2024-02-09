@@ -8,13 +8,13 @@ class UserUpdateView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
-    def put(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         try:
             user = User.objects.get(pk=request.user.id)
         except User.DoesNotExist:
             user = None
         if user is not None:
-            user_serializer = self.serializer_class(user, data=self.request.data, context=request.user)
+            user_serializer = self.serializer_class(user, data=self.request.data, partial=True, context=request.user)
             if user_serializer.is_valid():
                 user_serializer.save()
                 return Response({ 'message': 'Profile has been updated.' })
