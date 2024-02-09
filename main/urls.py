@@ -11,7 +11,8 @@ from main.views import (
     login_view,
     reminders_view,
     reminder_view,
-    user_view
+    user_view,
+    user_update_view
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('user', user_view, name='user'),
+    path('user/update', user_update_view, name='user_update'),
     path('reminders', reminders_view, name='user_reminders'),
     path('reminder/<int:pk>', reminder_view, name='user_reminder'),
 ]
