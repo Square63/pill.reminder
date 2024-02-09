@@ -17,8 +17,7 @@ class LoginSerializer(serializers.ModelSerializer):
         email=attrs.get('email')
         password=attrs.pop('password')
         try:
-            name = email.split('@')[0]
-            user = User.objects.get(username=name)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
             user = None
         if user is None:
@@ -29,8 +28,7 @@ class LoginSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Email or Password is wrong.")
         return attrs
     def create(self, validated_data):
-        name = validated_data['email'].split('@')[0]
-        user = User.objects.get(username=name)
+        user = User.objects.get(email=validated_data['email'])
         user.last_login = timezone.now()
         user.save()
         return user
