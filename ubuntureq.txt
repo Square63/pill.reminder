@@ -7,5 +7,6 @@ djangorestframework-simplejwt
 mysqlclient
 pillow
 PyJWT
+python-dotenv
 pytz
 sqlparse
