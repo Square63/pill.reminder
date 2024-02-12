@@ -1,19 +1,22 @@
 from rest_framework import serializers
 from ..models import Reminder
 from .MedicineSerializer import MedicineSerializer
+import json
 
 class ReminderSerializer(serializers.ModelSerializer):
-    days = serializers.SerializerMethodField('_days_info')
-    medicines = serializers.SerializerMethodField('_get_medicines')
+    hours = serializers.SerializerMethodField('_get_hours')
+    minutes = serializers.SerializerMethodField('_get_minutes')
     class Meta:
         model = Reminder
         fields = '__all__'
     def to_representation(self, instance):
         data =  super(ReminderSerializer, self).to_representation(instance)
+        medicines = instance.medicine_set.all()
+        medicines = MedicineSerializer(medicines, many=True)
+        data['medicines'] = medicines.data
+        data['days'] = instance.get_selected_days()
         return data
-    def _days_info(self, resume_object):
-        return resume_object.get_selected_days()
-    def _get_medicines(self, resume_object):
-        medicines = resume_object.medicine_set.all()
-        medicines_serializer = MedicineSerializer(medicines, many=True)
-        return medicines_serializer.data
+    def _get_hours(self, reminder_object):
+        return reminder_object.get_hours()
+    def _get_minutes(self, reminder_object):
+        return reminder_object.get_minutes()
