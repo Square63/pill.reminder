@@ -4,6 +4,8 @@ django-cors-headers
 django-extensions
 djangorestframework
 djangorestframework-simplejwt
+mysqlclient
+pillow
 PyJWT
 pytz
 sqlparse
