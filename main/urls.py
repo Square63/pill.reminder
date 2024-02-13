@@ -13,7 +13,8 @@ from main.views import (
     reminder_view,
     user_view,
     user_update_view,
-    add_reminder_view
+    add_reminder_view,
+    delete_reminder_view
 )
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     path('user/update', user_update_view, name='user_update'),
     path('reminders', reminders_view, name='user_reminders'),
     path('reminder/<int:pk>', reminder_view, name='user_reminder'),
+    path('reminder/<int:pk>/delete', delete_reminder_view, name='delete_reminder'),
     path('add/reminder', add_reminder_view, name='add_reminder'),
 ]
