@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'full_name', 'email', 'password', 'password2', 'last_login')
+        fields = ('id', 'first_name', 'last_name', 'full_name', 'email', 'password', 'password2', 'last_login', 'date_joined')
     def validate(self, attrs):
         password = attrs.get('password', None)
         password2 = attrs.pop('password2', None)
@@ -29,6 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
             return value
     def to_representation(self, instance):
         data = super(UserSerializer, self).to_representation(instance)
+        data['last_login'] = instance.last_login.strftime('%Y-%m-%d %H:%M:%S')
+        data['date_joined'] = instance.date_joined.strftime('%Y-%m-%d %H:%M:%S')
         return data
     def _get_full_name(self, user_object):
         return user_object.get_full_name()
