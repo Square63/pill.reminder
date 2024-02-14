@@ -17,11 +17,6 @@ class AddReminderView(generics.GenericAPIView):
             minutes = '0'+str(minutes)
         return hours+':'+minutes+self.request.data.get('ampm')
 
-    def validate(self):
-        data = self.request.data
-        for field in data:
-            print(field)
-
     def post(self, request, *arg, **kwargs):
         form_data = self.request.data
         medicines = form_data.get('medicines')
@@ -42,7 +37,6 @@ class AddReminderView(generics.GenericAPIView):
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         form_data['time'] = self.get_time()
         form_data['days'] = ', '.join(form_data['days'])
-        print(form_data)
         reminder_serializer = self.serializer_class(data=form_data)
         if reminder_serializer.is_valid():
             instance = reminder_serializer.save()
