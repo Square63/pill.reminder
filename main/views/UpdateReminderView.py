@@ -47,11 +47,12 @@ class UpdateReminderView(generics.UpdateAPIView):
             form_data['time'] = self.get_time()
             form_data['days'] = ', '.join(form_data['days'])
             reminder_serializer = self.serializer_class(reminder, self.request.data)
+            reminder_validated = False
             if reminder_serializer.is_valid():
-                reminder_serializer.save()
+                reminder_validated = True
             else:
                 return Response(reminder_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            for medicine in medicines:
+            for index, medicine in enumerate(medicines):
                 if medicine['id'] == '0':
                     medicine_instance = Medicine()
                 else:
@@ -59,7 +60,15 @@ class UpdateReminderView(generics.UpdateAPIView):
                 medicine_instance.reminder = reminder
                 medicine_instance.name = medicine['name']
                 medicine_instance.dosage = medicine['dosage']
-                medicine_instance.save()
+                medicine_serializer = MedicineSerializer(medicine_instance, data=medicine)
+                if medicine_serializer.is_valid() and reminder_validated:
+                    reminder_serializer.save()
+                    medicine_instance.save()
+                else:
+                    errors = {}
+                    for error in medicine_serializer.errors:
+                        errors[error+str(index)] = medicine_serializer.errors[error]
+                    return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
             current_medicine_ids = list(reminder.medicine_set.values_list('id', flat=True))
             incoming_medicine_ids = [medicine['id'] for medicine in medicines]
