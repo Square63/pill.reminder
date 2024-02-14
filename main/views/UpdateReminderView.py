@@ -37,7 +37,7 @@ class UpdateReminderView(generics.UpdateAPIView):
                 errors['minutes'] = ['This field is required.']
             if form_data.get('ampm') == '' or form_data.get('ampm') is None:
                 errors['ampm'] = ['This field is required.']
-            if form_data.get('days') == '' or form_data.get('days') is None:
+            if form_data.get('days') == '' or form_data.get('days') is None or not form_data.get('days'):
                 errors['days'] = ['This field is required.']
             if medicines is None:
                 errors['non_field_errors'] = ['Atleast add one medicine.']
