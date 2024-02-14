@@ -15,6 +15,8 @@ class ReminderSerializer(serializers.ModelSerializer):
         medicines = MedicineSerializer(medicines, many=True)
         data['medicines'] = medicines.data
         data['days'] = instance.get_selected_days()
+        data['days_arr'] = instance.get_stripped_days()
+        data['ampm'] = instance.get_ampm()
         return data
     def _get_hours(self, reminder_object):
         return reminder_object.get_hours()
