@@ -60,6 +60,14 @@ class UpdateReminderView(generics.UpdateAPIView):
                 medicine_instance.name = medicine['name']
                 medicine_instance.dosage = medicine['dosage']
                 medicine_instance.save()
+
+            current_medicine_ids = list(reminder.medicine_set.values_list('id', flat=True))
+            incoming_medicine_ids = [medicine['id'] for medicine in medicines]
+            medicines_to_remove_ids = [medicine_id for medicine_id in current_medicine_ids if medicine_id not in incoming_medicine_ids]
+            for medicine_id in medicines_to_remove_ids:
+                medicine = Medicine.objects.get(id=medicine_id)
+                medicine.delete()
+
         else:
             return Response({'error': 'Resume not found!'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'message': 'Reminder has been updated.'}, status=status.HTTP_200_OK)
