@@ -8,5 +8,5 @@ class MedicineSerializer(serializers.ModelSerializer):
     fields = '__all__'
   def to_representation(self, instance):
     data =  super(MedicineSerializer, self).to_representation(instance)
-    data['dosage'] = instance.get_dosage()
+    data['dosage_mg'] = instance.get_dosage()
     return data
