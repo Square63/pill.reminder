@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Create your models here.
 DAYS_CHOICES = [
@@ -17,6 +17,13 @@ class UserMethods(User):
     def upcoming_reminders(self):
         day = datetime.now().strftime('%A')
         reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=('00:00am', '23:59pm'), reminded=False)
+        return reminders
+    def next_reminders(self):
+        day = datetime.now().strftime('%A')
+        hours = datetime.now().strftime('%I:%M%p')
+        one_hour_later = datetime.now() + timedelta(hours=1)
+        one_hour_later = one_hour_later.strftime('%I:%M%p')
+        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=(hours, one_hour_later), reminded=False)
         return reminders
     class Meta:
         proxy=True
