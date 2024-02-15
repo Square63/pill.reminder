@@ -1,6 +1,6 @@
 <p>Reminder to take your following pills;</p>
 {% for reminder in reminders %}
-    <p>Take the following pills at {{ reminder.time }}</p>
+    <p>Take the following pills at {{ reminder.get_time }}</p>
     <ul>
         {% for medicine in reminder.medicine_set.all %}
             <li>{{ medicine.name }} x {{ medicine.get_dosage }}</li>
