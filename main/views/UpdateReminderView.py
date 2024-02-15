@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from ..serializers.MedicineSerializer import MedicineSerializer
 from ..serializers.ReminderSerializer import ReminderSerializer
 from ..models import Reminder, Medicine
+from datetime import datetime
 import json
 
 class UpdateReminderView(generics.UpdateAPIView):
@@ -18,7 +19,8 @@ class UpdateReminderView(generics.UpdateAPIView):
             hours = '0'+str(hours)
         if int(minutes) < 10 and len(minutes) == 1:
             minutes = '0'+str(minutes)
-        return hours+':'+minutes+self.request.data.get('ampm')
+        time_12_format = hours+':'+minutes+self.request.data.get('ampm')
+        return datetime.strptime(time_12_format, '%I:%M%p').time()
 
     def put(self, request, pk=None):
         try:
@@ -44,7 +46,7 @@ class UpdateReminderView(generics.UpdateAPIView):
             if errors:
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
             form_data['user'] = self.request.user.id
-            form_data['time'] = self.get_time()
+            form_data['time'] = str(self.get_time())
             form_data['days'] = ', '.join(form_data['days'])
             reminder_serializer = self.serializer_class(reminder, self.request.data)
             reminder_validated = False

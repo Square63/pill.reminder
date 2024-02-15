@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ..serializers.ReminderSerializer import ReminderSerializer
 from ..serializers.MedicineSerializer import MedicineSerializer
+from datetime import datetime
 import json
 
 class AddReminderView(generics.GenericAPIView):
@@ -15,7 +16,8 @@ class AddReminderView(generics.GenericAPIView):
             hours = '0'+str(hours)
         if int(minutes) < 10 and len(minutes) == 1:
             minutes = '0'+str(minutes)
-        return hours+':'+minutes+self.request.data.get('ampm')
+        time_12_format = hours+':'+minutes+self.request.data.get('ampm')
+        return datetime.strptime(time_12_format, '%I:%M%p').time()
 
     def post(self, request, *arg, **kwargs):
         form_data = self.request.data
@@ -35,7 +37,7 @@ class AddReminderView(generics.GenericAPIView):
             errors['non_field_errors'] = ['Atleast add one medicine.']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-        form_data['time'] = self.get_time()
+        form_data['time'] = str(self.get_time())
         form_data['days'] = ', '.join(form_data['days'])
         reminder_serializer = self.serializer_class(data=form_data)
         if reminder_serializer.is_valid():
