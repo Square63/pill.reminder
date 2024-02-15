@@ -2,7 +2,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 def send_reminder_email(user, reminders):
-    subject = 'Pill Reminder'
+    subject = 'Pills Reminder'
     message = '<p>This is a reminder.</p>'
     htmly = get_template('main/emails/reminder.html')
     d = { 'user': user, 'reminders': reminders }
