@@ -48,7 +48,8 @@ class Reminder(models.Model):
             days.append(day.strip())
         return days
     def get_hours(self):
-        return self.time.split(':')[0]
+        time_obj = datetime.strptime(self.time, '%H:%M:%S')
+        return time_obj.strftime('%I')
     def get_minutes(self):
         minutes = self.time.split(':')[1]
         return minutes
@@ -57,9 +58,9 @@ class Reminder(models.Model):
         time = time_obj.strftime('%I:%M %p')
         return time
     def get_ampm(self):
-        minutes = self.time.split(':')[1]
-        size = len(minutes)
-        return minutes[size - 2:]
+        time_obj = datetime.strptime(self.time, '%H:%M:%S')
+        ampm = time_obj.strftime('%p')
+        return ampm
     def get_selected_days(self):
         days = []
         for day, i in DAYS_CHOICES:
