@@ -20,10 +20,10 @@ class UserMethods(User):
         return reminders
     def next_reminders(self):
         day = datetime.now().strftime('%A')
-        hours = datetime.now().strftime('%I:%M%p')
+        hour = datetime.now().strftime('%H:%M:%S')
         one_hour_later = datetime.now() + timedelta(hours=1)
-        one_hour_later = one_hour_later.strftime('%I:%M%p')
-        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=(hours, one_hour_later), reminded=False)
+        one_hour_later = one_hour_later.strftime('%H:%M:%S')
+        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=(hour, one_hour_later), reminded=False)
         return reminders
     class Meta:
         proxy=True
@@ -51,8 +51,11 @@ class Reminder(models.Model):
         return self.time.split(':')[0]
     def get_minutes(self):
         minutes = self.time.split(':')[1]
-        size = len(minutes)
-        return minutes[:size - 2]
+        return minutes
+    def get_time(self):
+        time_obj = datetime.strptime(self.time, '%H:%M:%S')
+        time = time_obj.strftime('%I:%M %p')
+        return time
     def get_ampm(self):
         minutes = self.time.split(':')[1]
         size = len(minutes)
