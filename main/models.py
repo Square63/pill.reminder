@@ -25,6 +25,8 @@ class UserMethods(User):
         one_hour_later = one_hour_later.strftime('%H:%M:%S')
         reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=(hour, one_hour_later), reminded=False)
         return reminders
+    def get_full_name(self):
+        return self.first_name + " " + self.last_name
     class Meta:
         proxy=True
 
