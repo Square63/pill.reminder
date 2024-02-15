@@ -1,4 +1,4 @@
-<p>Hi {{ user.get_full_name() }},</p>
+<p>Hi {{ user.full_name }},</p>
 <p>This is a reminder to take your following pills;</p>
 {% for reminder in reminders %}
     <p>Take the following pills at {{ reminder.get_time }}</p>
