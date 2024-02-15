@@ -161,7 +161,7 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRONJOBS = [
-    ('55 */1 * * *', 'main.cron.send_reminder', '>> /var/www/pill.reminder/scheduled_job.log')
+    ('55 */1 * * *', 'main.cron.send_reminder')
 ]
 
 REST_FRAMEWORK = {
