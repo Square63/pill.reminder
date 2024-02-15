@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -149,19 +150,18 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # EMAIL_HOST='localhost'
 # EMAIL_PORT=1025
 
-# from .email_settings import *
-# EMAIL_BACKEND = EMAIL_BACKEND
-# EMAIL_HOST = EMAIL_HOST
-# EMAIL_HOST_USER = EMAIL_HOST_USER
-# EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-# EMAIL_PORT = EMAIL_PORT
-# EMAIL_USE_SSL = EMAIL_USE_SSL
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL")
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRONJOBS = [
-    ('*/1 * * * *', 'main.cron.send_reminder')
+    ('55 */1 * * *', 'main.cron.send_reminder', '>> /var/www/pill.reminder/scheduled_job.log')
 ]
 
 REST_FRAMEWORK = {
