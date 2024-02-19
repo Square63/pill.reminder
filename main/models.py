@@ -13,6 +13,12 @@ DAYS_CHOICES = [
     ("Saturday", "Saturday"),
 ]
 
+REMINDER_CHOICES = [
+    ("email", "Email"),
+    ("phone_call", "Phone Call"),
+    ("whatsapp", "WhatsApp")
+]
+
 class UserMethods(User):
     def upcoming_reminders(self):
         day = datetime.now().strftime('%A')
@@ -74,6 +80,8 @@ class Reminder(models.Model):
     def get_user_email(self):
         return self.user.email
     get_user_email.short_description = 'Email'
+    def get_reminder_type(self):
+        return self.remindertype if hasattr(self, 'remindertype') else None
     def __str__(self):
         return self.get_selected_days() + ' @ ' + self.time
 
@@ -88,3 +96,9 @@ class Medicine(models.Model):
     get_user.short_description = 'User'
     def __str__(self):
         return self.name + " " + self.get_dosage()
+
+class ReminderType(models.Model):
+    reminder_type = models.CharField(max_length=255, choices=REMINDER_CHOICES, default="email")
+    reminder = models.OneToOneField(Reminder, on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return self.reminder_type
