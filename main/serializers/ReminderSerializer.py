@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from ..models import Reminder
+from ..models import Reminder, ReminderType
 from .MedicineSerializer import MedicineSerializer
+from .ReminderTypeSerializer import ReminderTypeSerializer
 import json
 
 class ReminderSerializer(serializers.ModelSerializer):
@@ -18,6 +19,7 @@ class ReminderSerializer(serializers.ModelSerializer):
         data['days_arr'] = instance.get_stripped_days()
         data['ampm'] = instance.get_ampm()
         data['time'] = instance.get_time()
+        data['reminder_type'] = ReminderTypeSerializer(instance.get_reminder_type()).data['reminder_type']
         return data
     def _get_hours(self, reminder_object):
         return reminder_object.get_hours()
