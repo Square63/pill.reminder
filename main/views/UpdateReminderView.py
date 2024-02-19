@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ..serializers.MedicineSerializer import MedicineSerializer
 from ..serializers.ReminderSerializer import ReminderSerializer
-from ..models import Reminder, Medicine
+from ..serializers.ReminderTypeSerializer import ReminderTypeSerializer
+from ..models import Reminder, ReminderType, Medicine
 from datetime import datetime
 import json
 
@@ -54,6 +55,14 @@ class UpdateReminderView(generics.UpdateAPIView):
                 reminder_validated = True
             else:
                 return Response(reminder_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            form_data['reminder'] = reminder.id
+            reminder_type = reminder.get_reminder_type()
+            if reminder_type is None:
+                form_data['reminder'] = reminder.id
+                reminder_type_serializer = ReminderTypeSerializer(data=form_data)
+                reminder_type_serializer.is_valid(raise_exception=True)
+                reminder_type_serializer.save()
+
             for index, medicine in enumerate(medicines):
                 if medicine['id'] == '0':
                     medicine_instance = Medicine()
