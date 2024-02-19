@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from ..serializers.ReminderSerializer import ReminderSerializer
 from ..serializers.MedicineSerializer import MedicineSerializer
+from ..serializers.ReminderTypeSerializer import ReminderTypeSerializer
 from datetime import datetime
 import json
 
@@ -44,6 +45,14 @@ class AddReminderView(generics.GenericAPIView):
             instance = reminder_serializer.save()
         else:
             return Response(reminder_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        form_data['reminder'] = instance.id
+        reminder_type_serializer = ReminderTypeSerializer(data=form_data)
+        if reminder_type_serializer.is_valid():
+            reminder_type_serializer.save()
+        else:
+            return Response(reminder_type_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         medicines = form_data.get('medicines')
         medicines = json.loads(medicines)
         for medicine in medicines:
