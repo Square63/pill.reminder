@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 from datetime import datetime, timedelta
 
 # Create your models here.
@@ -34,6 +35,18 @@ class UserMethods(User):
     class Meta:
         proxy=True
 
+class Family(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+
+class Phone(models.Model):
+    number = models.CharField(max_length=20, null=True, blank=True)
+    verified = models.BooleanField(default=False)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    family = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True, blank=True)
+    phone = models.ForeignKey(Phone, on_delete=models.SET_NULL, null=True, blank=True)
+
 class ProfilePicture(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -44,6 +57,8 @@ class Reminder(models.Model):
     time = models.CharField(max_length=20)
     reminded = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
     class Meta:
         ordering = ('-id',)
     def get_days(self):
@@ -84,6 +99,9 @@ class Reminder(models.Model):
         return self.remindertype if hasattr(self, 'remindertype') else None
     def __str__(self):
         return self.get_selected_days() + ' @ ' + self.time
+    def save(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        super().save(*args, **kwargs)
 
 class Medicine(models.Model):
     name = models.CharField(max_length=255)
