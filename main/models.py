@@ -120,3 +120,8 @@ class ReminderType(models.Model):
     reminder = models.OneToOneField(Reminder, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.reminder_type
+
+class PasswordToken(models.Model):
+  token = models.CharField(max_length=255)
+  used = models.BooleanField(default=False)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
