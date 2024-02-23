@@ -11,5 +11,5 @@ class EmailSerializer(serializers.Serializer):
         except User.DoesNotExist:
             user = None
         if user is None:
-            raise serializers.ValidationError('User not found.')
+            raise serializers.ValidationError('Account with this email was not found.')
         return attrs
