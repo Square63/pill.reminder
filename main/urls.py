@@ -9,6 +9,8 @@ from rest_framework_simplejwt.views import (
 from main.views import (
     register_view,
     login_view,
+    reset_password_view,
+    reset_password,
     reminders_view,
     reminder_view,
     user_view,
@@ -25,6 +27,8 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('send-reset-link', reset_password_view, name='api-send-reset-link'),
+    path('reset-password/<uidb64>/<token>/', reset_password, name='api-reset-password'),
     path('user', user_view, name='user'),
     path('user/update', user_update_view, name='user_update'),
     path('user/upcoming/reminders', upcoming_reminders_view, name='upcoming_reminders'),

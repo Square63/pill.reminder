@@ -1,5 +1,7 @@
 from main.views.RegisterView import register_view
 from main.views.LoginView import login_view
+from main.views.ResetPasswordView import reset_password_view
+from main.views.ResetPassword import reset_password
 from main.views.RemindersView import reminders_view
 from main.views.ReminderView import reminder_view
 from main.views.AddReminderView import add_reminder_view
@@ -12,6 +14,8 @@ from main.views.UpcomingRemindersView import upcoming_reminders_view
 __all__ = [
     "register_view",
     "login_view",
+    "reset_password_view",
+    "reset_password",
     "reminders_view",
     "reminder_view",
     "user_view",
