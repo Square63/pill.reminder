@@ -3,6 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
+from ..models import UserProfile, Family
 
 class RegisterSerializer(serializers.ModelSerializer):
     access = serializers.SerializerMethodField('_get_access_token')
@@ -39,6 +40,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.first_name = validated_data['first_name'] if 'first_name' in validated_data else ''
         user.last_name = validated_data['last_name'] if 'last_name' in validated_data else ''
         user.save()
+        family = Family.objects.create()
+        family.save()
+        userprofile = UserProfile.objects.create(user=user, family=family)
+        userprofile.save()
+
         return user
     def _get_access_token(self, user_object):
         refresh = RefreshToken.for_user(user_object)

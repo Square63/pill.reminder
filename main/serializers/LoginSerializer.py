@@ -4,6 +4,7 @@ from django.core.validators import EmailValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
+from ..models import Family, UserProfile
 
 class LoginSerializer(serializers.ModelSerializer):
     tokens = serializers.SerializerMethodField('_get_access_token')
@@ -27,10 +28,20 @@ class LoginSerializer(serializers.ModelSerializer):
             if authenticate_user is None:
                 raise serializers.ValidationError("Email or Password is wrong.")
         return attrs
+    def check_family(self, user):
+        try:
+            profile = user.userprofile
+        except UserProfile.DoesNotExist:
+            profile = None
+        if profile is None:
+            family = Family.objects.create()
+            family.save()
+            UserProfile.objects.create(user=user, family=family)
     def create(self, validated_data):
         user = User.objects.get(email=validated_data['email'])
         user.last_login = timezone.now()
         user.save()
+        self.check_family(user)
         return user
     def _get_access_token(self, user_object):
         refresh = RefreshToken.for_user(user_object)
