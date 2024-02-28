@@ -10,6 +10,7 @@ from main.views.DeleteReminderView import delete_reminder_view
 from main.views.UserView import user_view
 from main.views.UserUpdateView import user_update_view
 from main.views.UpcomingRemindersView import upcoming_reminders_view
+from main.views.FamilyMembersView import family_members_view
 
 __all__ = [
     "register_view",
@@ -23,5 +24,6 @@ __all__ = [
     "add_reminder_view",
     "update_reminder_view",
     "delete_reminder_view",
-    "upcoming_reminders_view"
+    "upcoming_reminders_view",
+    "family_members_view"
 ]
