@@ -52,11 +52,13 @@ class ProfilePicture(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Reminder(models.Model):
+    title = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=True)
     days = models.CharField(max_length=255, default="Monday")
     time = models.CharField(max_length=20)
     reminded = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    family = models.ForeignKey(Family, on_delete=models.CASCADE, null=True, related_name='reminders')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     class Meta:
