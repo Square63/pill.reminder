@@ -28,6 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
             return value
     def to_representation(self, instance):
         data = super(UserSerializer, self).to_representation(instance)
+        data['family'] = instance.userprofile.family.id
         data['full_name'] = instance.get_full_name()
         data['last_login'] = instance.last_login.strftime('%Y-%m-%d %H:%M:%S')
         data['date_joined'] = instance.date_joined.strftime('%Y-%m-%d %H:%M:%S')
