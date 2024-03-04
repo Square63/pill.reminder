@@ -19,7 +19,8 @@ from main.views import (
     update_reminder_view,
     delete_reminder_view,
     upcoming_reminders_view,
-    family_members_view
+    family_members_view,
+    add_family_member
 )
 
 urlpatterns = [
@@ -39,4 +40,5 @@ urlpatterns = [
     path('reminder/<int:pk>/delete', delete_reminder_view, name='delete_reminder'),
     path('add/reminder', add_reminder_view, name='add_reminder'),
     path('get-family-members', family_members_view, name='family_members_view'),
+    path('family/add-member', add_family_member, name='add-family-member')
 ]

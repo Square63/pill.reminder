@@ -11,6 +11,7 @@ from main.views.UserView import user_view
 from main.views.UserUpdateView import user_update_view
 from main.views.UpcomingRemindersView import upcoming_reminders_view
 from main.views.FamilyMembersView import family_members_view
+from main.views.AddFamilyMember import add_family_member
 
 __all__ = [
     "register_view",
@@ -25,5 +26,6 @@ __all__ = [
     "update_reminder_view",
     "delete_reminder_view",
     "upcoming_reminders_view",
-    "family_members_view"
+    "family_members_view",
+    "add_family_member"
 ]
