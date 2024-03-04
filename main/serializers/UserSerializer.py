@@ -35,7 +35,6 @@ class UserSerializer(serializers.ModelSerializer):
         return data
     def update(self, instance, validated_data):
         for name, value in validated_data.items():
-            print(name)
             if name == 'password':
                 instance.set_password(value)
             else:
