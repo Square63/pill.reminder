@@ -31,8 +31,6 @@ class UpdateReminderView(generics.UpdateAPIView):
         if reminder is not None:
             form_data = self.request.data
             medicines = json.loads(form_data.get('medicines'))
-            if self.request.user.id:
-                form_data['user'] = self.request.user.id
             errors = {}
             if form_data.get('hours') == '' or form_data.get('hours') is None:
                 errors['hours'] = ['This field is required.']
@@ -46,7 +44,7 @@ class UpdateReminderView(generics.UpdateAPIView):
                 errors['non_field_errors'] = ['Atleast add one medicine.']
             if errors:
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-            form_data['user'] = self.request.user.id
+            form_data['family'] = self.request.user.userprofile.family.id
             form_data['time'] = str(self.get_time())
             form_data['days'] = ', '.join(form_data['days'])
             reminder_serializer = self.serializer_class(reminder, self.request.data)
