@@ -23,6 +23,7 @@ class AddReminderView(generics.GenericAPIView):
     def post(self, request, *arg, **kwargs):
         form_data = self.request.data
         medicines = form_data.get('medicines')
+        form_data['family'] = request.user.userprofile.family.id
         errors = {}
         if form_data.get('hours') == '' or form_data.get('hours') is None:
             errors['hours'] = ['This field is required.']
