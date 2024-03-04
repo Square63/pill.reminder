@@ -40,6 +40,7 @@ class Family(models.Model):
 
 class Phone(models.Model):
     number = models.CharField(max_length=20, null=True, blank=True)
+    code = models.BigIntegerField(null=True, blank=True)
     verified = models.BooleanField(default=False)
 
 class UserProfile(models.Model):
