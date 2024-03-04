@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         data = super(UserSerializer, self).to_representation(instance)
         data['family'] = instance.userprofile.family.id
         data['full_name'] = instance.get_full_name()
-        data['last_login'] = instance.last_login.strftime('%Y-%m-%d %H:%M:%S')
+        data['last_login'] = instance.last_login.strftime('%Y-%m-%d %H:%M:%S') if instance.last_login is not None else None
         data['date_joined'] = instance.date_joined.strftime('%Y-%m-%d %H:%M:%S')
         return data
     def update(self, instance, validated_data):
