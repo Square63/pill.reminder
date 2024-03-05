@@ -22,6 +22,7 @@ class ReminderSerializer(serializers.ModelSerializer):
         data['days'] = instance.get_selected_days()
         data['days_arr'] = instance.get_stripped_days()
         data['ampm'] = instance.get_ampm()
+        data['hours'] = instance.get_hours()
         data['time'] = instance.get_time()
         data['type'] = reminder_type
         data['user'] = UserSerializer(instance.user).data
