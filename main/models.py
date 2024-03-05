@@ -73,7 +73,7 @@ class Reminder(models.Model):
         return days
     def get_hours(self):
         time_obj = datetime.strptime(self.time, '%H:%M:%S')
-        return time_obj.strftime('%I')
+        return time_obj.strftime('%H')
     def get_minutes(self):
         minutes = self.time.split(':')[1]
         return minutes
