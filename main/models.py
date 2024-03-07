@@ -56,7 +56,6 @@ class Reminder(models.Model):
     title = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=True)
     days = models.CharField(max_length=255, default="Monday")
-    time = models.CharField(max_length=20)
     reminded = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, null=True, related_name='reminders')
@@ -71,20 +70,6 @@ class Reminder(models.Model):
         for day in self.get_days():
             days.append(day.strip())
         return days
-    def get_hours(self):
-        time_obj = datetime.strptime(self.time, '%H:%M:%S')
-        return time_obj.strftime('%H')
-    def get_minutes(self):
-        minutes = self.time.split(':')[1]
-        return minutes
-    def get_time(self):
-        time_obj = datetime.strptime(self.time, '%H:%M:%S')
-        time = time_obj.strftime('%I:%M %p')
-        return time
-    def get_ampm(self):
-        time_obj = datetime.strptime(self.time, '%H:%M:%S')
-        ampm = time_obj.strftime('%p')
-        return ampm
     def get_selected_days(self):
         days = []
         for day, i in DAYS_CHOICES:
@@ -101,14 +86,14 @@ class Reminder(models.Model):
     def get_reminder_type(self):
         return self.remindertype if hasattr(self, 'remindertype') else None
     def __str__(self):
-        return self.get_selected_days() + ' @ ' + self.time
+        return self.title
     def save(self, *args, **kwargs):
         self.updated_at = timezone.now()
         super().save(*args, **kwargs)
 
 class Medicine(models.Model):
     name = models.CharField(max_length=255)
-    dosage = models.BigIntegerField()
+    dosage = models.CharField(max_length=255)
     reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
     def get_dosage(self):
         return str(self.dosage) + 'mg'
@@ -119,10 +104,11 @@ class Medicine(models.Model):
         return self.name + " " + self.get_dosage()
 
 class ReminderType(models.Model):
-    reminder_type = models.CharField(max_length=255, choices=REMINDER_CHOICES, default="email")
-    reminder = models.OneToOneField(Reminder, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, choices=REMINDER_CHOICES, default="email")
+    time = models.CharField(max_length=20)
+    reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
     def __str__(self) -> str:
-        return self.reminder_type
+        return self.type
 
 class PasswordToken(models.Model):
   token = models.CharField(max_length=255)
