@@ -31,13 +31,8 @@ class UpdateReminderView(generics.UpdateAPIView):
         if reminder is not None:
             form_data = self.request.data
             medicines = json.loads(form_data.get('medicines'))
+            times = json.loads(form_data.get('times'))
             errors = {}
-            if form_data.get('hours') == '' or form_data.get('hours') is None:
-                errors['hours'] = ['This field is required.']
-            if form_data.get('minutes') == '' or form_data.get('minutes') is None:
-                errors['minutes'] = ['This field is required.']
-            if form_data.get('ampm') == '' or form_data.get('ampm') is None:
-                errors['ampm'] = ['This field is required.']
             if form_data.get('days') == '' or form_data.get('days') is None or not form_data.get('days'):
                 errors['days'] = ['This field is required.']
             if medicines is None:
@@ -45,7 +40,6 @@ class UpdateReminderView(generics.UpdateAPIView):
             if errors:
                 return Response(errors, status=status.HTTP_400_BAD_REQUEST)
             form_data['family'] = self.request.user.userprofile.family.id
-            form_data['time'] = str(self.get_time())
             form_data['days'] = ', '.join(form_data['days'])
             reminder_serializer = self.serializer_class(reminder, self.request.data)
             reminder_validated = False
@@ -54,12 +48,24 @@ class UpdateReminderView(generics.UpdateAPIView):
             else:
                 return Response(reminder_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             form_data['reminder'] = reminder.id
-            reminder_type = reminder.get_reminder_type()
-            if reminder_type is None:
-                form_data['reminder'] = reminder.id
-                reminder_type_serializer = ReminderTypeSerializer(data=form_data)
-                reminder_type_serializer.is_valid(raise_exception=True)
-                reminder_type_serializer.save()
+            for index, time in enumerate(times):
+                time.pop('object')
+                if time['id'] == 0:
+                    time['reminder'] = reminder.id
+                    reminder_type_instance = ReminderType()
+                else:
+                    reminder_type_instance = ReminderType.objects.get(id=time['id'])
+                reminder_type_instance.reminder = reminder
+                reminder_type_instance.time = time['time']
+                reminder_type_instance.type = time['type']
+                reminder_type_serializer = ReminderTypeSerializer(reminder_type_instance, data=time)
+                if reminder_type_serializer.is_valid():
+                    reminder_type_serializer.save()
+                else:
+                    errors = {}
+                    for error in reminder_type_serializer.errors:
+                        errors[error+str(index)] = reminder_type_serializer.errors[error]
+                    return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
             for index, medicine in enumerate(medicines):
                 if medicine['id'] == '0':
@@ -85,6 +91,13 @@ class UpdateReminderView(generics.UpdateAPIView):
             for medicine_id in medicines_to_remove_ids:
                 medicine = Medicine.objects.get(id=medicine_id)
                 medicine.delete()
+
+            current_time_ids = list(reminder.remindertype_set.values_list('id', flat=True))
+            incoming_time_ids = [time['id'] for time in times]
+            times_to_remove_ids = [time_id for time_id in current_time_ids if time_id not in incoming_time_ids]
+            for time_id in times_to_remove_ids:
+                time = ReminderType.objects.get(id=time_id)
+                time.delete()
 
         else:
             return Response({'error': 'Resume not found!'}, status=status.HTTP_404_NOT_FOUND)
