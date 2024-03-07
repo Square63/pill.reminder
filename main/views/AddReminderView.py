@@ -34,6 +34,7 @@ class AddReminderView(generics.GenericAPIView):
         times = form_data.get('times')
         times = json.loads(times)
         for time in times:
+            time.pop('id')
             time.pop('object')
             time['reminder'] = instance.id
         reminder_type_serializer = ReminderTypeSerializer(data=times, many=True)
