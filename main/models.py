@@ -86,7 +86,7 @@ class Reminder(models.Model):
     def get_reminder_type(self):
         return self.remindertype if hasattr(self, 'remindertype') else None
     def __str__(self):
-        return self.title
+        return self.get_days()
     def save(self, *args, **kwargs):
         self.updated_at = timezone.now()
         super().save(*args, **kwargs)
