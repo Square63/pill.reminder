@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from rest_framework import serializers
+from .UserProfileSerializer import UserProfileSerializer
+from .PhoneSerializer import PhoneSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[EmailValidator])
@@ -28,10 +30,16 @@ class UserSerializer(serializers.ModelSerializer):
             return value
     def to_representation(self, instance):
         data = super(UserSerializer, self).to_representation(instance)
+
+        user_profile_serializer = UserProfileSerializer(instance.userprofile)
+        phone_serializer = PhoneSerializer(instance.userprofile.phone)
+        print(phone_serializer.data)
+
         data['family'] = instance.userprofile.family.id
         data['full_name'] = instance.get_full_name()
         data['last_login'] = instance.last_login.strftime('%Y-%m-%d %H:%M:%S') if instance.last_login is not None else None
         data['date_joined'] = instance.date_joined.strftime('%Y-%m-%d %H:%M:%S')
+        data['phone'] = phone_serializer.data
         return data
     def update(self, instance, validated_data):
         for name, value in validated_data.items():
