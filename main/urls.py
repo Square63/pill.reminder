@@ -21,7 +21,10 @@ from main.views import (
     delete_reminder_view,
     upcoming_reminders_view,
     family_members_view,
-    add_family_member
+    add_family_member,
+    member_view,
+    verification_sms_view,
+    verify_code_view
 )
 
 urlpatterns = [
@@ -42,5 +45,8 @@ urlpatterns = [
     path('reminder/<int:pk>/delete', delete_reminder_view, name='delete_reminder'),
     path('add/reminder', add_reminder_view, name='add_reminder'),
     path('get-family-members', family_members_view, name='family_members_view'),
-    path('family/add-member', add_family_member, name='add-family-member')
+    path('family/add-member', add_family_member, name='add-family-member'),
+    path('member/<int:pk>', member_view, name='member_view'),
+    path('send-verification-sms/<int:pk>', verification_sms_view, name='send-verification-sms'),
+    path('verify-code/<int:pk>', verify_code_view, name='verify-code'),
 ]
