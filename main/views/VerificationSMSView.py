@@ -29,10 +29,9 @@ class VerificationSMSView(generics.CreateAPIView):
         profile.phone = user_phone
         profile.save()
 
-        tw_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        message = '''This is your phone number activation code: {}'''.format(code)
-
         try:
+            tw_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+            message = '''This is your phone number activation code: {}'''.format(code)
             sms = tw_client.messages.create(
                 from_='+15102395727',
                 to=phone,
