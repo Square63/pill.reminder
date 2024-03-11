@@ -32,6 +32,8 @@ class UpdateReminderView(generics.UpdateAPIView):
             form_data = self.request.data
             medicines = json.loads(form_data.get('medicines'))
             times = json.loads(form_data.get('times'))
+            current_medicine_ids = list(reminder.medicine_set.values_list('id', flat=True))
+            current_time_ids = list(reminder.remindertype_set.values_list('id', flat=True))
             errors = {}
             if form_data.get('days') == '' or form_data.get('days') is None or not form_data.get('days'):
                 errors['days'] = ['This field is required.']
@@ -69,6 +71,7 @@ class UpdateReminderView(generics.UpdateAPIView):
 
             for index, medicine in enumerate(medicines):
                 if medicine['id'] == '0':
+                    medicine['reminder'] = reminder.id
                     medicine_instance = Medicine()
                 else:
                     medicine_instance = Medicine.objects.get(id=medicine['id'])
@@ -85,20 +88,17 @@ class UpdateReminderView(generics.UpdateAPIView):
                         errors[error+str(index)] = medicine_serializer.errors[error]
                     return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-            current_medicine_ids = list(reminder.medicine_set.values_list('id', flat=True))
-            incoming_medicine_ids = [medicine['id'] for medicine in medicines]
+            incoming_medicine_ids = [medicine['id'] for medicine in medicines if medicine['id'] != '0']
             medicines_to_remove_ids = [medicine_id for medicine_id in current_medicine_ids if medicine_id not in incoming_medicine_ids]
             for medicine_id in medicines_to_remove_ids:
                 medicine = Medicine.objects.get(id=medicine_id)
                 medicine.delete()
 
-            current_time_ids = list(reminder.remindertype_set.values_list('id', flat=True))
             incoming_time_ids = [time['id'] for time in times]
             times_to_remove_ids = [time_id for time_id in current_time_ids if time_id not in incoming_time_ids]
             for time_id in times_to_remove_ids:
                 time = ReminderType.objects.get(id=time_id)
                 time.delete()
-
         else:
             return Response({'error': 'Resume not found!'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'message': 'Reminder has been updated.'}, status=status.HTTP_200_OK)
