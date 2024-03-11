@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
 from rest_framework import serializers
-from ..models import Family, Phone, UserProfile
+from ..models import Phone, UserProfile
+from .UserSerializer import UserSerializer
 
 class MemberSerializer(serializers.Serializer):
     full_name = serializers.CharField(required=True)
@@ -32,3 +33,6 @@ class MemberSerializer(serializers.Serializer):
         userprofile.save()
 
         return user
+    def to_representation(self, instance):
+        user_serializer = UserSerializer(instance)
+        return user_serializer.data
