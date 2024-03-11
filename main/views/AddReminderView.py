@@ -17,6 +17,8 @@ class AddReminderView(generics.GenericAPIView):
         form_data['family'] = request.user.userprofile.family.id
         errors = {}
         reminder_serializer = self.serializer_class(data=form_data)
+        if form_data.get('days'):
+            form_data['days'] = ', '.join(form_data['days'])
         if not reminder_serializer.is_valid():
             errors.update(reminder_serializer.errors)
         if form_data.get('days') == '' or form_data.get('days') is None:
@@ -27,7 +29,6 @@ class AddReminderView(generics.GenericAPIView):
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-        form_data['days'] = ', '.join(form_data['days'])
         reminder_serializer = self.serializer_class(data=form_data)
         if reminder_serializer.is_valid():
             instance = reminder_serializer.save()
