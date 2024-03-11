@@ -32,14 +32,18 @@ class VerificationSMSView(generics.CreateAPIView):
         tw_client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
         message = '''This is your phone number activation code: {}'''.format(code)
 
-        sms = tw_client.messages.create(
+        try:
+            sms = tw_client.messages.create(
                 from_='+15102395727',
                 to=phone,
                 body=message
             )
+        except:
+            sms = None
 
-        print(sms.sid)
-
-        return Response({'message': 'A verification code has been sent to your phone number.'}, status=status.HTTP_200_OK)
+        if sms is not None:
+            return Response({'message': 'A verification code has been sent to your phone number.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'non_field_errors': ['Something went wrong while trying to send sms. Please contact support.']}, status=status.HTTP_410_GONE)
 
 verification_sms_view = VerificationSMSView.as_view()
