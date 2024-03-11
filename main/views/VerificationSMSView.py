@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from twilio.rest import Client
 from ..models import Phone
+from datetime import datetime, timedelta
 import random
 
 class VerificationSMSView(generics.CreateAPIView):
@@ -24,6 +25,7 @@ class VerificationSMSView(generics.CreateAPIView):
             user_phone = Phone()
         user_phone.number = phone
         user_phone.code = code
+        user_phone.sent_on = datetime.now() + timedelta(minutes=1)
         user_phone.save()
 
         profile.phone = user_phone
