@@ -53,7 +53,7 @@ class ProfilePicture(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Reminder(models.Model):
-    title = models.CharField(max_length=255, null=True)
+    title = models.CharField(max_length=255, null=False)
     is_active = models.BooleanField(default=True)
     days = models.CharField(max_length=255, default="Monday")
     reminded = models.BooleanField(default=False)
