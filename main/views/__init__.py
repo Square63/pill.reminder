@@ -13,6 +13,9 @@ from main.views.ChangePasswordView import change_password_serializer
 from main.views.UpcomingRemindersView import upcoming_reminders_view
 from main.views.FamilyMembersView import family_members_view
 from main.views.AddFamilyMember import add_family_member
+from main.views.MemberView import member_view
+from main.views.VerificationSMSView import verification_sms_view
+from main.views.VerifyCodeView import verify_code_view
 
 __all__ = [
     "register_view",
@@ -29,5 +32,8 @@ __all__ = [
     "delete_reminder_view",
     "upcoming_reminders_view",
     "family_members_view",
-    "add_family_member"
+    "add_family_member",
+    "member_view",
+    "verification_sms_view",
+    "verify_code_view"
 ]
