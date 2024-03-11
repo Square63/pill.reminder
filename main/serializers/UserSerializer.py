@@ -31,9 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super(UserSerializer, self).to_representation(instance)
 
-        user_profile_serializer = UserProfileSerializer(instance.userprofile)
         phone_serializer = PhoneSerializer(instance.userprofile.phone)
-        print(phone_serializer.data)
 
         data['family'] = instance.userprofile.family.id
         data['full_name'] = instance.get_full_name()

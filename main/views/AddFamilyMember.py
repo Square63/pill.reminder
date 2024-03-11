@@ -11,10 +11,9 @@ class AddFamilyMember(generics.CreateAPIView):
         form_data = self.request.data
         form_data['family'] = request.user.userprofile.family
         member_serializer = self.serializer_class(data=form_data, context=request.user)
-        print(form_data)
         if member_serializer.is_valid():
             member_serializer.save()
-            return Response({'message': 'Member has been added.'}, status=status.HTTP_200_OK)
+            return Response(member_serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(member_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
