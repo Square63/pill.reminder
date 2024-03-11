@@ -16,10 +16,14 @@ class AddReminderView(generics.GenericAPIView):
         medicines = form_data.get('medicines')
         form_data['family'] = request.user.userprofile.family.id
         errors = {}
+        reminder_serializer = self.serializer_class(data=form_data)
+        if not reminder_serializer.is_valid():
+            errors.update(reminder_serializer.errors)
         if form_data.get('days') == '' or form_data.get('days') is None:
             errors['days'] = ['This field is required.']
         if medicines is None:
-            errors['non_field_errors'] = ['Atleast add one medicine.']
+            errors['name0'] = ['This field is required.']
+            errors['dosage0'] = ['This field is required.']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -37,16 +41,29 @@ class AddReminderView(generics.GenericAPIView):
             time.pop('id')
             time.pop('object')
             time['reminder'] = instance.id
-        reminder_type_serializer = ReminderTypeSerializer(data=times, many=True)
-        reminder_type_serializer.is_valid(raise_exception=True)
-        reminder_type_serializer.save()
+        for index, time in enumerate(times):
+            reminder_type_serializer = ReminderTypeSerializer(data=time)
+            if reminder_type_serializer.is_valid():
+                reminder_type_serializer.save()
+            else:
+                instance.delete()
+                errors = {}
+                for error in reminder_type_serializer.errors:
+                    errors[error+str(index)] = reminder_type_serializer.errors[error]
+                return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         medicines = form_data.get('medicines')
         medicines = json.loads(medicines)
-        for medicine in medicines:
+        for index, medicine in enumerate(medicines):
             medicine['reminder'] = instance.id
-        medicines_serializer = MedicineSerializer(data=medicines, many=True)
-        medicines_serializer.is_valid(raise_exception=True)
-        medicines_serializer.save()
+            medicines_serializer = MedicineSerializer(data=medicine)
+            if medicines_serializer.is_valid():
+                medicines_serializer.save()
+            else:
+                errors = {}
+                instance.delete()
+                for error in medicines_serializer.errors:
+                    errors[error+str(index)] = medicines_serializer.errors[error]
+                return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Reminder has been added!'})
 
 add_reminder_view = AddReminderView.as_view()
