@@ -30,7 +30,7 @@ class UserMethods(User):
         hour = datetime.now().strftime('%H:%M:%S')
         one_hour_later = datetime.now() + timedelta(hours=1)
         one_hour_later = one_hour_later.strftime('%H:%M:%S')
-        reminders = self.reminder_set.filter(is_active=1, days__contains=day, time__range=(hour, one_hour_later), reminded=False)
+        reminders = self.reminder_set.filter(is_active=1, days__contains=day, remindertype__time__range=(hour, one_hour_later), reminded=False)
         return reminders
     class Meta:
         proxy=True
