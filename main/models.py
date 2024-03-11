@@ -42,6 +42,7 @@ class Phone(models.Model):
     number = models.CharField(max_length=20, null=True, blank=True)
     code = models.BigIntegerField(null=True, blank=True)
     verified = models.BooleanField(default=False)
+    sent_on = models.DateTimeField(null=True, blank=True)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
