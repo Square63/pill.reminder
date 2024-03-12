@@ -15,17 +15,15 @@
             </div>
             <div style="margin: 0; padding: 15px;">
                 <p style="font-size: 16px;">Hi {{ user.get_full_name }},</p>
-                {% for reminder in reminders %}
-                    <p style="font-size: 16px;">Take the following medicines at <strong>{{ reminder.get_time }}</strong> today:</p>
-                    <ul>
-                        {% for medicine in reminder.medicine_set.all %}
-                            <li style="font-size: 16px;">{{ medicine.name }} x {{ medicine.get_dosage }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
+                <p style="font-size: 16px;">Take the following medicines at <strong>{{ remindertype.time }}</strong> today:</p>
+                <ul>
+                    {% for medicine in reminder.medicine_set.all %}
+                        <li style="font-size: 16px;">{{ medicine.name }} x {{ medicine.get_dosage }}</li>
+                    {% endfor %}
+                </ul>
                 <div style="font-size: 14px; height: 30px;">
                     <p style="margin-bottom: 0; float: left;">Automated Email Reminder</p>
-                    <p style="margin-bottom: 0; float: right;">Powered by <a href="https://www.square63.com" style="color: #4848ff;">Square63</a></p>
+                    <p style="margin-bottom: 0; float: right;"><a href="http://pillreminderreact.square63.net" style="color: #4848ff;">RxTick</a></p>
                 </div>
             </div>
         </div>
