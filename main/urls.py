@@ -23,6 +23,7 @@ from main.views import (
     family_members_view,
     add_family_member,
     member_view,
+    member_edit,
     verification_sms_view,
     verify_code_view
 )
@@ -46,7 +47,8 @@ urlpatterns = [
     path('add/reminder', add_reminder_view, name='add_reminder'),
     path('get-family-members', family_members_view, name='family_members_view'),
     path('family/add-member', add_family_member, name='add-family-member'),
-    path('member/<int:pk>', member_view, name='member_view'),
+    path('member/<int:pk>', member_view, name='member-view'),
+    path('member/<int:pk>/edit', member_edit, name='member-edit'),
     path('send-verification-sms/<int:pk>', verification_sms_view, name='send-verification-sms'),
     path('verify-code/<int:pk>', verify_code_view, name='verify-code'),
 ]

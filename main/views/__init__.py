@@ -14,6 +14,7 @@ from main.views.UpcomingRemindersView import upcoming_reminders_view
 from main.views.FamilyMembersView import family_members_view
 from main.views.AddFamilyMember import add_family_member
 from main.views.MemberView import member_view
+from main.views.UpdateMemberView import member_edit
 from main.views.VerificationSMSView import verification_sms_view
 from main.views.VerifyCodeView import verify_code_view
 
@@ -34,6 +35,7 @@ __all__ = [
     "family_members_view",
     "add_family_member",
     "member_view",
+    "member_edit",
     "verification_sms_view",
     "verify_code_view"
 ]
