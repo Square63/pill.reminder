@@ -25,7 +25,8 @@ from main.views import (
     member_view,
     member_edit,
     verification_sms_view,
-    verify_code_view
+    verify_code_view,
+    call_script_view
 )
 
 urlpatterns = [
@@ -51,4 +52,5 @@ urlpatterns = [
     path('member/<int:pk>/edit', member_edit, name='member-edit'),
     path('send-verification-sms/<int:pk>', verification_sms_view, name='send-verification-sms'),
     path('verify-code/<int:pk>', verify_code_view, name='verify-code'),
+    path('<int:pk>/get-call-script', call_script_view, name='call=script')
 ]
