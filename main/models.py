@@ -108,6 +108,10 @@ class ReminderType(models.Model):
     reminder = models.ForeignKey(Reminder, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.type
+    def get_time(self):
+        parsed_time = datetime.strptime(self.time, '%H:%M')
+        formatted_time = parsed_time.strftime('%I:%M %p')
+        return formatted_time
 
 class PasswordToken(models.Model):
   token = models.CharField(max_length=255)
