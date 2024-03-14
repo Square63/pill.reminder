@@ -1,5 +1,6 @@
 from .models import UserMethods as User
 from .mail import send_reminder_email
+from .phone import make_phone_call
 from datetime import datetime, timedelta
 
 def send_reminder():
@@ -15,3 +16,5 @@ def send_reminder():
                 for remindertype in remindertypes:
                     if remindertype.type == 'email':
                         send_reminder_email(user, reminder, remindertype)
+                    if remindertype.type == 'phone_call':
+                        make_phone_call(user.userprofile.phone.number, remindertype.id)
