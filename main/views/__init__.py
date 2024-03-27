@@ -18,6 +18,7 @@ from main.views.UpdateMemberView import member_edit
 from main.views.VerificationSMSView import verification_sms_view
 from main.views.VerifyCodeView import verify_code_view
 from main.views.GetCallScriptView import call_script_view
+from main.views.GoogleSignInView import google_signin_view
 
 __all__ = [
     "register_view",
@@ -39,5 +40,6 @@ __all__ = [
     "member_edit",
     "verification_sms_view",
     "verify_code_view",
-    "call_script_view"
+    "call_script_view",
+    "google_signin_view"
 ]
