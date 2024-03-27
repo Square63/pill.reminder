@@ -7,6 +7,8 @@ from ..models import UserProfile, Family
 
 class RegisterSerializer(serializers.ModelSerializer):
     access = serializers.SerializerMethodField('_get_access_token')
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
     email = serializers.EmailField(required=True, validators=[EmailValidator])
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
